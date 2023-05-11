@@ -23,7 +23,7 @@ use App\Http\Controllers\UserController;
 Route::prefix('admin')->controller(\App\Http\Controllers\Auth\AuthController::class)->group(function () {
     Route::get('/', 'adminLoginPage')->name('login');
     Route::post('/', 'adminLogin');
-    Route::get('/logout', 'logout')->name('logout');
+    Route::get('/logout', 'adminLogout')->name('logout');
 });
 
 Route::middleware('auth')->group(function () {

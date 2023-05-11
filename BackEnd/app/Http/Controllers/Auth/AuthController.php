@@ -13,28 +13,11 @@ use App\Http\Resources\UserInfoResource;
 use JWTAuth;
 use JWTAuthException;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
-    //
     public function login(Request $request){
-        // if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-        //     if(Auth::user()->is_Admin == true){
-        //         return redirect()->route('dashboard');
-        //     }
-        //     else{
-        //         setcookie('userId', Auth::user()->id);// cookies available in 2 hours
-        //         // dd($_COOKIE['userId']);
-        //         return response()->json(['msg' => 'Đăng nhập thành công', 
-        //                                 'user_info' =>
-        //                                     new UserInfoResource(User::find(Auth::user()->id)),
-        //                                 'status' => 200,
-        //                                 ], 200);
-        //     }
-        // }
-        // else{
-        //     return response()->json(['msg' => 'Đăng nhập thất bại', 'email' => $request->email, 'status' => 401], 401);
-        // }
         $credentials = $request->only('email', 'password');
         $token = null;
         try {
@@ -130,7 +113,7 @@ class AuthController extends Controller
         return view('Login');
     }
 
-    public function adminLogin(Request $request)
+    public function adminLogin(AuthRequest $request)
     {
         if (RateLimiter::tooManyAttempts($request->email, 5)) {
             $second = RateLimiter::availableIn($request->email);
@@ -145,8 +128,24 @@ class AuthController extends Controller
             ])->onlyInput('email');
         } // if wrong email or password, return error
 
+        if (Auth::user()->is_admin != 1) {
+            $request->session()->invalidate();
+            return redirect()->back()->withErrors([
+                'email' => 'No access permission',
+            ])->onlyInput('email');
+        }
+
         $request->session()->regenerate();
 
         return to_route('dashboard');
+    }
+
+    public function adminLogout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return to_route('login');
     }
 }
