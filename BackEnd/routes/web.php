@@ -20,18 +20,27 @@ use App\Http\Controllers\UserController;
 //     })->name('dashboard');
 // });
 // code for dev
-Route::get('/', function () {
-    return view('pages.dashboard');
-})->name('dashboard');
+Route::prefix('admin')->controller(\App\Http\Controllers\Auth\AuthController::class)->group(function () {
+    Route::get('/', 'adminLoginPage')->name('login');
+    Route::post('/', 'adminLogin');
+    Route::get('/logout', 'logout')->name('logout');
+});
 
-Route::controller(UserController::class)->group(function () {
-    Route::prefix('user')->group(function () {
-        Route::get('/', 'index')->name('user');
-        Route::get('/create', 'create')->name('user.create');
-        Route::post('/create', 'store')->name('user.store');
-        Route::get('/{id}', 'show')->name('user.show');
-        Route::get('/edit/{id}', 'edit')->name('user.edit');
-        Route::put('/{user}', 'update')->name('user.update');
-        Route::delete('/{user}', 'destroy')->name('user.destroy');
+Route::middleware('auth')->group(function () {
+    Route::get('/', function () {
+        return view('pages.dashboard');
+    })->name('dashboard');
+    
+    Route::controller(UserController::class)->group(function () {
+        Route::prefix('user')->group(function () {
+            Route::get('/', 'index')->name('user');
+            Route::get('/create', 'create')->name('user.create');
+            Route::post('/create', 'store')->name('user.store');
+            Route::get('/{id}', 'show')->name('user.show');
+            Route::get('/edit/{id}', 'edit')->name('user.edit');
+            Route::put('/{user}', 'update')->name('user.update');
+            Route::delete('/{user}', 'destroy')->name('user.destroy');
+        });
     });
+    
 });

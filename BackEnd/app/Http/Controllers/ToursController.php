@@ -176,23 +176,52 @@ class ToursController extends Controller
 
     public function searchByAddress(Request $request)
     {
-        return response()->json([
-            'ts_tour' => Tours::where('tours.address', 'like', "%" . $request->place . "%")
-                ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
-                ->join('users', 'ts_profiles.user_id', '=', 'users.id')
-                ->select('tours.*', 'users.name as travel_supplier_name')
-                ->get(),
+        $tsTour = Tours::where('tours.address', 'like', "%" . $request->place . "%")
+            ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+            ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+            ->select('tours.*', 'users.name as travel_supplier_name')
+            ->get()
+            ->toArray();
+        foreach($tsTour as $key => $value){
+            $tsTour[$key]['type_tour'] = "ts";
+        }
 
-            'ps_tour' => [
-                'from_place' => PersonalTours::where('personal_tours.from_where', 'like', "%" . $request->place . "%")
-                    ->join('users', 'personal_tours.owner_id', '=', 'users.id')
-                    ->select('personal_tours.*', 'users.name as owner_name')
-                    ->get(),
-                'to_place' => PersonalTours::where('personal_tours.to_where', 'like', "%" . $request->place . "%")
-                    ->join('users', 'personal_tours.owner_id', '=', 'users.id')
-                    ->select('personal_tours.*', 'users.name as owner_name')
-                    ->get(),
-            ]
-        ]);
+        $psFromWhere = PersonalTours::where('personal_tours.from_where', 'like', "%" . $request->place . "%")
+            ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+            ->select('personal_tours.*', 'users.name as owner_name')
+            ->get()
+            ->toArray();
+        foreach($psFromWhere as $key => $value){
+            $psFromWhere[$key]['type_tour'] = "ps";
+        }
+
+        $psToWhere = PersonalTours::where('personal_tours.to_where', 'like', "%" . $request->place . "%")
+            ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+            ->select('personal_tours.*', 'users.name as owner_name')
+            ->get()
+            ->toArray();
+        foreach($psToWhere as $key => $value){
+            $psToWhere[$key]['type_tour'] = "ps";
+        }
+
+        return response()->json(array_merge($tsTour, $psFromWhere, $psToWhere));
+        // return response()->json([
+        //     'ts_tour' => Tours::where('tours.address', 'like', "%" . $request->place . "%")
+        //         ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+        //         ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+        //         ->select('tours.*', 'users.name as travel_supplier_name')
+        //         ->get(),
+
+        //     'ps_tour' => [
+        //         'from_place' => PersonalTours::where('personal_tours.from_where', 'like', "%" . $request->place . "%")
+        //             ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+        //             ->select('personal_tours.*', 'users.name as owner_name')
+        //             ->get(),
+        //         'to_place' => PersonalTours::where('personal_tours.to_where', 'like', "%" . $request->place . "%")
+        //             ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+        //             ->select('personal_tours.*', 'users.name as owner_name')
+        //             ->get(),
+        //     ]
+        // ]);
     }
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserInfoResource;
 use JWTAuth;
 use JWTAuthException;
+use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
 {
@@ -122,5 +123,30 @@ class AuthController extends Controller
         ]);
 
         return response()->json(['msg' => "Đăng ký thành công", 'status' => 200], 200);
+    }
+
+    public function adminLoginPage()
+    {
+        return view('Login');
+    }
+
+    public function adminLogin(Request $request)
+    {
+        if (RateLimiter::tooManyAttempts($request->email, 5)) {
+            $second = RateLimiter::availableIn($request->email);
+            return redirect()->back()->with('error', "Your account has been locked! Please turn back in $second s");
+        } // Lock login in 2 minutes if user login fail 5 times 
+
+        if (!Auth::attempt($request->only(['email', 'password']), $request->filled('remember'))) {
+            RateLimiter::hit($request->email, 120);
+
+            return redirect()->back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        } // if wrong email or password, return error
+
+        $request->session()->regenerate();
+
+        return to_route('dashboard');
     }
 }
