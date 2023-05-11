@@ -65,6 +65,8 @@ Route::prefix('ts/tour')->group(function(){
     Route::get('/all/{id}', [ToursController::class, 'allTourOfTS']);
 });
 
+Route::get('/search', [ToursController::class, 'searchByAddress']);
+
 Route::prefix('personal/tour')->group(function(){
     Route::get('/', [PersonalToursController::class, 'index']);
     Route::get('/search', [PersonalToursController::class, 'search']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tours;
+use App\Models\PersonalTours;
 use App\Models\TripPlan;
 use Illuminate\Http\Request;
 use App\Http\Resources\HomepageToursResource;
@@ -164,12 +165,34 @@ class ToursController extends Controller
     public function search(Request $request)
     {
         return response()->json([
-            'tours' => Tours::where('tours.name', 'like', "%$request->name%")
-            ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
-            ->join('users', 'ts_profiles.user_id', '=', 'users.id')
-            ->select('tours.*', 'users.name as travel_supplier_name')
-            ->get(),
+            'tours' => Tours::where('tours.name', 'like', "%" . $request->name. "%")
+                ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+                ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+                ->select('tours.*', 'users.name as travel_supplier_name')
+                ->get(),
             'status' => 200,
+        ]);
+    }
+
+    public function searchByAddress(Request $request)
+    {
+        return response()->json([
+            'ts_tour' => Tours::where('tours.address', 'like', "%" . $request->place . "%")
+                ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+                ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+                ->select('tours.*', 'users.name as travel_supplier_name')
+                ->get(),
+
+            'ps_tour' => [
+                'from_place' => PersonalTours::where('personal_tours.from_where', 'like', "%" . $request->place . "%")
+                    ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+                    ->select('personal_tours.*', 'users.name as owner_name')
+                    ->get(),
+                'to_place' => PersonalTours::where('personal_tours.to_where', 'like', "%" . $request->place . "%")
+                    ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+                    ->select('personal_tours.*', 'users.name as owner_name')
+                    ->get(),
+            ]
         ]);
     }
 }

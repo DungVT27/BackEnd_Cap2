@@ -131,7 +131,7 @@ class PersonalToursController extends Controller
     public function search(Request $request)
     {
         return response()->json([
-            'tours' => PersonalTours::where('personal_tours.name', 'like', "%$request->name%")
+            'tours' => PersonalTours::where('personal_tours.name', 'like', "%" . $request->name . "%")
             ->join('users', 'personal_tours.owner_id', '=', 'users.id')
             ->select('personal_tours.*', 'users.name as owner_name')
             ->get(),
