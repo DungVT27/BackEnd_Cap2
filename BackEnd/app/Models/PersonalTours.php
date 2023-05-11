@@ -36,14 +36,14 @@ class PersonalTours extends Model
     protected function fromDate(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => date('d-m-Y', strtotime($value)),
+            get: fn ($value) => date('Y-m-d', strtotime($value)),
         );
     }
 
     protected function toDate(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => date('d-m-Y', strtotime($value)),
+            get: fn ($value) => date('Y-m-d', strtotime($value)),
         );
     }
 

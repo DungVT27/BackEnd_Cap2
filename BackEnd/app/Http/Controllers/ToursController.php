@@ -72,6 +72,8 @@ class ToursController extends Controller
             'to_date' => $request->to_date,
             'price' => $request->price,
             'slot' => $request->slot,
+            'lat' => $request->lat,
+            'lon' => $request->lon,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -116,6 +118,8 @@ class ToursController extends Controller
                     'to_date' => $request->to_date,
                     'price' => $request->price,
                     'slot' => $request->slot,
+                    'lat' => $request->lat,
+                    'lon' => $request->lon,
                 ]);
 
                 $tripPlan = $this->arrayTripPlan($request->schedule);

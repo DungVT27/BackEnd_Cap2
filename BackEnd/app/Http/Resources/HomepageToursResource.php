@@ -22,6 +22,8 @@ class HomepageToursResource extends JsonResource
             'to_date' => $this->to_date,
             'price' => $this->price,
             'ts' => $this->tsProfile->user->name,
+            'lat' => $this->lat,
+            'lon' => $this->lon,
             'images' => $this->images,
             'status' => 200,
         ];
