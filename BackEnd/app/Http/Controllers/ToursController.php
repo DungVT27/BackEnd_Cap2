@@ -25,15 +25,9 @@ class ToursController extends Controller
     */
     public function arrayTripPlan($schedule)
     {
-        $schedule = preg_replace('/[}\[\]\n\t\"]/', '', trim($schedule));
-        $schedule = explode('{', $schedule);
-        $tripPlan = [];
-        foreach($schedule as $value){
-            if(!$value == ""){
-                array_push($tripPlan, explode(',', $value));
-            }
-        }
-        return $tripPlan;
+        $schedule = preg_replace('/\'/', '', trim($schedule));
+        $schedule = json_decode(($schedule));
+        return $schedule;
     }
 
     /*
@@ -41,20 +35,13 @@ class ToursController extends Controller
     */
     public function createTripPlanForTour($tripPlan, $tourId)
     {
-        $result = [];
-        foreach($tripPlan as $tripPlanItem){
-            foreach ($tripPlanItem as $value) {
-                $split = explode(': ', $value);
-                $key = $split[0];
-                $value = isset($split[1]) ? $split[1] : '';
-                $result[$key] = $value;
-            }
+        foreach($tripPlan as $tripPlanKey => $tripPlanValue){
             TripPlan::create([
-                'name' => $result['name'],
-                'description' => $result['desc'],
+                'name' => $tripPlanValue->name,
+                'description' => $tripPlanValue->desc,
                 'tour_id' => $tourId,
-                'lat' => $result['lat'],
-                'lon' => $result['lon'],
+                'lat' => $tripPlanValue->lat,
+                'lon' => $tripPlanValue->lon,
             ]);
         }
     }
@@ -64,6 +51,7 @@ class ToursController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $tourId = Tours::insertGetId([
             'ts_id' => $request->ts_id,
             'name' => $request->name,
@@ -80,6 +68,7 @@ class ToursController extends Controller
         ]);
 
         $tripPlan = $this->arrayTripPlan($request->schedule);
+        // dd($tripPlan);
         $this->createTripPlanForTour($tripPlan, $tourId);
 
         return response()->json(['msg' => "Tạo tour thành công", 'status' => 200], 200);
