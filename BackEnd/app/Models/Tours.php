@@ -25,8 +25,6 @@ class Tours extends Model
         'to_date',
         'price',
         'slot',
-        'lat',
-        'lon',
     ];
 
     protected $hidden = [
