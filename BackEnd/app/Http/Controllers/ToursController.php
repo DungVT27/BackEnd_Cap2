@@ -51,7 +51,6 @@ class ToursController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
         $tourId = Tours::insertGetId([
             'ts_id' => $request->ts_id,
             'name' => $request->name,
@@ -68,7 +67,6 @@ class ToursController extends Controller
         ]);
 
         $tripPlan = $this->arrayTripPlan($request->schedule);
-        // dd($tripPlan);
         $this->createTripPlanForTour($tripPlan, $tourId);
 
         return response()->json(['msg' => "Tạo tour thành công", 'status' => 200], 200);
@@ -98,7 +96,6 @@ class ToursController extends Controller
                 return response()->json(['msg' => "Đây không phải là tour của bạn", 'status' => 403], 403);
             }
             else{
-                // dd($request->schedule);
                 Tours::find($request->id)->update([
                     'ts_id' => $request->ts_id,
                     'name' => $request->name,
