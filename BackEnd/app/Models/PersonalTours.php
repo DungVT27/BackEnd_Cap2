@@ -26,6 +26,7 @@ class PersonalTours extends Model
         'lon',
         'from_where',
         'to_where',
+        'image',
     ];
 
     protected $hidden = [

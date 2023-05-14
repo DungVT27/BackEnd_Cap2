@@ -130,12 +130,14 @@ class DatabaseSeeder extends Seeder
             'room_owner' => 1,
             'name' => "Phòng đi chơi",
             'description' => "Không chơi không về",
+            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
 
         Rooms::create([
             'room_owner' => 2,
             'name' => "Phòng đi bay",
             'description' => "Không bay không ngủ",
+            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
 
         PersonalTours::create([
@@ -149,6 +151,7 @@ class DatabaseSeeder extends Seeder
             'lon' => "103,212133",
             'from_where' => "Huế",
             'to_where' => "Đà Nẵng",
+            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
 
         PersonalTours::create([
@@ -162,6 +165,7 @@ class DatabaseSeeder extends Seeder
             'lon' => "103,16123561",
             'from_where' => "Hồ Chí Minh",
             'to_where' => "Huế",
+            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
 
         PersonalTours::create([
@@ -175,6 +179,7 @@ class DatabaseSeeder extends Seeder
             'lon' => "103,123123",
             'from_where' => "Vinh",
             'to_where' => "Hà Nội",
+            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
 
         Images::create([

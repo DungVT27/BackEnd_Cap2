@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedInteger('room_owner');
             
             $table->string('name', 100);
-            $table->string('description', 200);
+            $table->string('description', 200)->nullable();
+            $table->string('image', 2048);
             $table->timestamps();
 
             $table->foreign('room_owner')

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('trip_plans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description', 1024);
+            $table->string('description', 1024)->nullable();
             $table->unsignedInteger('tour_id');
             $table->foreign('tour_id')
                 ->references('id')
