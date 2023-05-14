@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tours;
 use App\Models\PersonalTours;
 use App\Models\TripPlan;
+use App\Models\Images;
 use Illuminate\Http\Request;
 use App\Http\Resources\HomepageToursResource;
 use App\Http\Resources\TourDetailResource;
@@ -46,12 +47,36 @@ class ToursController extends Controller
         }
     }
 
+    /*
+    ** Create a array Trip Schedlue with string 'schedule' get in form
+    */
+    public function arrayImages($images)
+    {
+        $removeCharacter = ['\'', '[', ']', ' '];
+        $images = str_replace($removeCharacter, '', trim($images));
+        $images = explode(',', $images);
+        return $images;
+    }
+
+    /*
+    ** Create images for a insert tour
+    */
+    public function createImagesForTour($images, $tourId)
+    {
+        foreach($images as $imageValue){
+            Images::create([
+                'image_url' => $imageValue,
+                'tour_id' => $tourId,
+            ]);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $tourId = Tours::insertGetId([
+        $tour = Tours::create([
             'ts_id' => $request->ts_id,
             'name' => $request->name,
             'address' => $request->address,
@@ -65,7 +90,10 @@ class ToursController extends Controller
         ]);
 
         $tripPlan = $this->arrayTripPlan($request->schedule);
-        $this->createTripPlanForTour($tripPlan, $tourId);
+        $this->createTripPlanForTour($tripPlan, $tour->id);
+
+        $images = $this->arrayImages($request->images);
+        $this->createImagesForTour($images, $tour->id);
 
         return response()->json(['msg' => "Tạo tour thành công", 'status' => 200], 200);
     }
@@ -108,6 +136,10 @@ class ToursController extends Controller
                 $tripPlan = $this->arrayTripPlan($request->schedule);
                 TripPlan::where('tour_id', $request->id)->delete();
                 $this->createTripPlanForTour($tripPlan, $request->id);
+
+                $images = $this->arrayImages($request->images);
+                Images::where('tour_id', $request->id)->delete();
+                $this->createImagesForTour($images, $request->id);
                 return response()->json(['msg' => "Update tour thành công", 'status' => 200], 200);
             }
         } 

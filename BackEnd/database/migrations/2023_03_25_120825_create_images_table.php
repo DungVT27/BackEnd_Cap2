@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('image_name', 2048);
+            $table->string('image_url', 2048);
             $table->unsignedInteger('tour_id');
 
             $table->foreign('tour_id')
