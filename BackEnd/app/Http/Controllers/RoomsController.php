@@ -14,7 +14,9 @@ class RoomsController extends Controller
     public function index()
     {
         return response()->json([
-            'allRoom' => Rooms::all(),
+            'allRoom' => Rooms::join('users', 'rooms.room_owner', '=', 'users.id')
+                ->select('rooms.*', 'users.name as room_owner_name')
+                ->get(),
             'status' => 200,
         ]);
     }
