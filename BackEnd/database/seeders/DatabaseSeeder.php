@@ -101,8 +101,6 @@ class DatabaseSeeder extends Seeder
             'to_date' => "2023-05-14",
             'price' => 1000000,
             'slot' => 10,
-            'lat' => '10.2132133',
-            'lon' => '4.1231231',
         ]);
 
         Tours::create([
@@ -114,8 +112,6 @@ class DatabaseSeeder extends Seeder
             'to_date' => "2023-05-14",
             'price' => 10000000,
             'slot' => 10,
-            'lat' => '10.7871823',
-            'lon' => '4.0219312',
         ]);
 
         Tours::create([
@@ -127,8 +123,6 @@ class DatabaseSeeder extends Seeder
             'to_date' => "2023-05-14",
             'price' => 1000000000,
             'slot' => 10,
-            'lat' => '10.745643',
-            'lon' => '4.8718723126',
         ]);
 
 

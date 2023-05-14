@@ -186,4 +186,10 @@ class RoomsController extends Controller
             ]);
         }
     }
+
+    public function roomsOfUser(Request $request)
+    {
+        // dd($request->all());
+        return response()->json(Rooms::where('room_owner', $request->user_id)->get());
+    }
 }

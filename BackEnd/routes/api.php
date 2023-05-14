@@ -87,6 +87,7 @@ Route::prefix('personal/room')->group(function(){
     Route::get('getAllUserNeedConfirm/{room_id}/', [RoomsController::class, 'getAllUserNeedConfirm']);
     Route::post('/acceptUser/{room_id}', [RoomsController::class, 'acceptUser']);
     Route::post('/refuseUser/{room_id}', [RoomsController::class, 'refuseUser']);
+    Route::get('/roomOfUser', [RoomsController::class, 'roomsOfUser']);
 });
 
 Route::prefix('friend')->group(function(){
