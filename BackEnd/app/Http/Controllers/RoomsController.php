@@ -189,7 +189,12 @@ class RoomsController extends Controller
 
     public function roomsOfUser(Request $request)
     {
-        // dd($request->all());
+        if(empty(User::find($request->user_id))){
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Người dùng không tồn tại',
+            ]);
+        }
         return response()->json(Rooms::where('room_owner', $request->user_id)->get());
     }
 }
