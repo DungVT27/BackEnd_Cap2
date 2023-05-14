@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('lon');
             $table->string('from_where')->nullable()->default('');
             $table->string('to_where');
-            $table->string('image', 2048);
+            $table->string('image', 2048)->nullable();
             $table->timestamps();
 
             $table->foreign('owner_id')
