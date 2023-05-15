@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,5 +34,12 @@ Route::controller(UserController::class)->group(function () {
         Route::get('/edit/{id}', 'edit')->name('user.edit');
         Route::put('/{user}', 'update')->name('user.update');
         Route::delete('/{user}', 'destroy')->name('user.destroy');
+    });
+});
+
+Route::controller(RoomController::class)->group(function () {
+    Route::prefix('room')->group(function () {
+        Route::get('/', 'index')->name('room.index');
+        Route::delete('/{room}', 'destroy')->name('room.destroy');
     });
 });

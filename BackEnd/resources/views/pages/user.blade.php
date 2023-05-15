@@ -39,9 +39,9 @@
                                 class="bi bi-plus-circle"></i></a>
                     </div>
 
-                    <form action="" method="post">
+                    {{-- <form action="" method="post">
                         @csrf
-                        {{-- @method('DELETE') --}}
+                        @method('DELETE') --}}
                         <div class="card-body">
                             <h5 class="card-title">Uses <span>|
                                     List</span></h5>
@@ -95,7 +95,7 @@
                                             <form action="{{ route('user.destroy', ['user' => $user->id]) }}" method="post">
                                                 @csrf
                                                 @method('DELETE')
-                                                <div class="modal fade" id="exampleModal{{ $user->id }}" tabindex="-1"
+                                                <div class="modal fade" id="exampleModal{{ $user->id }}" tabindex="0"
                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
@@ -127,7 +127,7 @@
                                 {{ $users->links() }}
                             </div>
                         </div>
-                    </form>
+                    {{-- </form> --}}
                 </div>
             </div>
         </section>

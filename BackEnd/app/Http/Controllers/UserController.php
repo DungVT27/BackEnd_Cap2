@@ -6,9 +6,6 @@ use App\Http\Requests\UserRequest;
 use App\Models\TSProfile;
 use App\Models\User;
 use App\Models\UserProfile;
-use Illuminate\Http\Request;
-
-use function PHPUnit\Framework\isEmpty;
 
 class UserController extends Controller
 {
@@ -94,6 +91,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        return $user;
+        User::destroy($user->id);
+
+        return redirect()->route('user')->with('success', 'Deleted successfully!');
     }
 }
