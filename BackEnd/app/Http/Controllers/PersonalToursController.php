@@ -34,6 +34,7 @@ class PersonalToursController extends Controller
             'lon' => $request->lon,
             'from_where' => $request->from_where,
             'to_where' => $request->to_where,
+            'image' => $request->image,
         ]);
 
         Rooms::find($request->room_id)->members()->detach($request->owner_id);
@@ -90,6 +91,7 @@ class PersonalToursController extends Controller
                     'lon' => $request->lon,
                     'from_where' => $request->from_where,
                     'to_where' => $request->to_where,
+                    'image' => $request->image,
                 ]);
                 return response()->json(['msg' => "Update tour thành công", 'status' => 200], 200);
             }
@@ -117,7 +119,6 @@ class PersonalToursController extends Controller
 
     public function homepageGroups()
     {
-        // dd(1);
         return HomepageGroupResource::collection(PersonalTours::where('from_date', '>=', date('y-m-d'))->get());
     }
 
@@ -131,7 +132,7 @@ class PersonalToursController extends Controller
     public function search(Request $request)
     {
         return response()->json([
-            'tours' => PersonalTours::where('personal_tours.name', 'like', "%$request->name%")
+            'tours' => PersonalTours::where('personal_tours.name', 'like', "%" . $request->name . "%")
             ->join('users', 'personal_tours.owner_id', '=', 'users.id')
             ->select('personal_tours.*', 'users.name as owner_name')
             ->get(),

@@ -65,6 +65,8 @@ Route::prefix('ts/tour')->group(function(){
     Route::get('/all/{id}', [ToursController::class, 'allTourOfTS']);
 });
 
+Route::get('/search', [ToursController::class, 'searchByAddress']);
+
 Route::prefix('personal/tour')->group(function(){
     Route::get('/', [PersonalToursController::class, 'index']);
     Route::get('/search', [PersonalToursController::class, 'search']);
@@ -85,6 +87,7 @@ Route::prefix('personal/room')->group(function(){
     Route::get('getAllUserNeedConfirm/{room_id}/', [RoomsController::class, 'getAllUserNeedConfirm']);
     Route::post('/acceptUser/{room_id}', [RoomsController::class, 'acceptUser']);
     Route::post('/refuseUser/{room_id}', [RoomsController::class, 'refuseUser']);
+    Route::get('/roomOfUser', [RoomsController::class, 'roomsOfUser']);
 });
 
 Route::prefix('friend')->group(function(){

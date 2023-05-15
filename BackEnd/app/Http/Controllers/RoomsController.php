@@ -14,7 +14,9 @@ class RoomsController extends Controller
     public function index()
     {
         return response()->json([
-            'allRoom' => Rooms::all(),
+            'allRoom' => Rooms::join('users', 'rooms.room_owner', '=', 'users.id')
+                ->select('rooms.*', 'users.name as room_owner_name')
+                ->get(),
             'status' => 200,
         ]);
     }
@@ -28,6 +30,7 @@ class RoomsController extends Controller
             'room_owner' => $request->owner_id,
             'name' => $request->name,
             'description' => $request->description,
+            'image' => $request->image,
         ]);
 
         Rooms::find($room->id)->members()->attach($request->owner_id, ['is_confirm' => true]);
@@ -66,6 +69,7 @@ class RoomsController extends Controller
                 Rooms::find($request->id)->update([
                     'name' => $request->name,
                     'description' => $request->description,
+                    'image' => $request->image,
                 ]);
                 return response()->json(['msg' => "Update room thành công", 'status' => 200], 200);
             }
@@ -185,5 +189,16 @@ class RoomsController extends Controller
                 'status' => 304,
             ]);
         }
+    }
+
+    public function roomsOfUser(Request $request)
+    {
+        if(empty(User::find($request->user_id))){
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Người dùng không tồn tại',
+            ]);
+        }
+        return response()->json(Rooms::where('room_owner', $request->user_id)->get());
     }
 }

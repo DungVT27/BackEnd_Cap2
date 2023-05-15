@@ -12,28 +12,12 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserInfoResource;
 use JWTAuth;
 use JWTAuthException;
+use Illuminate\Support\Facades\RateLimiter;
+use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
-    //
     public function login(Request $request){
-        // if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-        //     if(Auth::user()->is_Admin == true){
-        //         return redirect()->route('dashboard');
-        //     }
-        //     else{
-        //         setcookie('userId', Auth::user()->id);// cookies available in 2 hours
-        //         // dd($_COOKIE['userId']);
-        //         return response()->json(['msg' => 'Đăng nhập thành công', 
-        //                                 'user_info' =>
-        //                                     new UserInfoResource(User::find(Auth::user()->id)),
-        //                                 'status' => 200,
-        //                                 ], 200);
-        //     }
-        // }
-        // else{
-        //     return response()->json(['msg' => 'Đăng nhập thất bại', 'email' => $request->email, 'status' => 401], 401);
-        // }
         $credentials = $request->only('email', 'password');
         $token = null;
         try {
@@ -122,5 +106,46 @@ class AuthController extends Controller
         ]);
 
         return response()->json(['msg' => "Đăng ký thành công", 'status' => 200], 200);
+    }
+
+    public function adminLoginPage()
+    {
+        return view('Login');
+    }
+
+    public function adminLogin(AuthRequest $request)
+    {
+        if (RateLimiter::tooManyAttempts($request->email, 5)) {
+            $second = RateLimiter::availableIn($request->email);
+            return redirect()->back()->with('error', "Your account has been locked! Please turn back in $second s");
+        } // Lock login in 2 minutes if user login fail 5 times 
+
+        if (!Auth::attempt($request->only(['email', 'password']), $request->filled('remember'))) {
+            RateLimiter::hit($request->email, 120);
+
+            return redirect()->back()->withErrors([
+                'email' => 'The provided credentials do not match our records.',
+            ])->onlyInput('email');
+        } // if wrong email or password, return error
+
+        if (Auth::user()->is_admin != 1) {
+            $request->session()->invalidate();
+            return redirect()->back()->withErrors([
+                'email' => 'No access permission',
+            ])->onlyInput('email');
+        }
+
+        $request->session()->regenerate();
+
+        return to_route('dashboard');
+    }
+
+    public function adminLogout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return to_route('login');
     }
 }

@@ -16,6 +16,7 @@ class Rooms extends Model
         'room_owner',
         'name',
         'description',
+        'image',
     ];
 
     protected $hidden = [

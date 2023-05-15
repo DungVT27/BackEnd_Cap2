@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tours;
+use App\Models\PersonalTours;
 use App\Models\TripPlan;
+use App\Models\Images;
 use Illuminate\Http\Request;
 use App\Http\Resources\HomepageToursResource;
 use App\Http\Resources\TourDetailResource;
@@ -24,15 +26,9 @@ class ToursController extends Controller
     */
     public function arrayTripPlan($schedule)
     {
-        $schedule = preg_replace('/[}\[\]\n\t\"]/', '', trim($schedule));
-        $schedule = explode('{', $schedule);
-        $tripPlan = [];
-        foreach($schedule as $value){
-            if(!$value == ""){
-                array_push($tripPlan, explode(',', $value));
-            }
-        }
-        return $tripPlan;
+        $schedule = preg_replace('/\'/', '', trim($schedule));
+        $schedule = json_decode(($schedule));
+        return $schedule;
     }
 
     /*
@@ -40,20 +36,37 @@ class ToursController extends Controller
     */
     public function createTripPlanForTour($tripPlan, $tourId)
     {
-        $result = [];
-        foreach($tripPlan as $tripPlanItem){
-            foreach ($tripPlanItem as $value) {
-                $split = explode(': ', $value);
-                $key = $split[0];
-                $value = isset($split[1]) ? $split[1] : '';
-                $result[$key] = $value;
-            }
+        foreach($tripPlan as $tripPlanKey => $tripPlanValue){
             TripPlan::create([
-                'name' => $result['name'],
-                'description' => $result['desc'],
+                'name' => $tripPlanValue->name,
+                'description' => $tripPlanValue->desc,
                 'tour_id' => $tourId,
-                'lat' => $result['lat'],
-                'lon' => $result['lon'],
+                'lat' => $tripPlanValue->lat,
+                'lon' => $tripPlanValue->lon,
+            ]);
+        }
+    }
+
+    /*
+    ** Create a array Trip Schedlue with string 'schedule' get in form
+    */
+    public function arrayImages($images)
+    {
+        $removeCharacter = ['\'', '[', ']', ' '];
+        $images = str_replace($removeCharacter, '', trim($images));
+        $images = explode(',', $images);
+        return $images;
+    }
+
+    /*
+    ** Create images for a insert tour
+    */
+    public function createImagesForTour($images, $tourId)
+    {
+        foreach($images as $imageValue){
+            Images::create([
+                'image_url' => $imageValue,
+                'tour_id' => $tourId,
             ]);
         }
     }
@@ -63,7 +76,7 @@ class ToursController extends Controller
      */
     public function store(Request $request)
     {
-        $tourId = Tours::insertGetId([
+        $tour = Tours::create([
             'ts_id' => $request->ts_id,
             'name' => $request->name,
             'address' => $request->address,
@@ -72,14 +85,15 @@ class ToursController extends Controller
             'to_date' => $request->to_date,
             'price' => $request->price,
             'slot' => $request->slot,
-            'lat' => $request->lat,
-            'lon' => $request->lon,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
 
         $tripPlan = $this->arrayTripPlan($request->schedule);
-        $this->createTripPlanForTour($tripPlan, $tourId);
+        $this->createTripPlanForTour($tripPlan, $tour->id);
+
+        $images = $this->arrayImages($request->images);
+        $this->createImagesForTour($images, $tour->id);
 
         return response()->json(['msg' => "Tạo tour thành công", 'status' => 200], 200);
     }
@@ -108,7 +122,6 @@ class ToursController extends Controller
                 return response()->json(['msg' => "Đây không phải là tour của bạn", 'status' => 403], 403);
             }
             else{
-                // dd($request->schedule);
                 Tours::find($request->id)->update([
                     'ts_id' => $request->ts_id,
                     'name' => $request->name,
@@ -118,13 +131,15 @@ class ToursController extends Controller
                     'to_date' => $request->to_date,
                     'price' => $request->price,
                     'slot' => $request->slot,
-                    'lat' => $request->lat,
-                    'lon' => $request->lon,
                 ]);
 
                 $tripPlan = $this->arrayTripPlan($request->schedule);
                 TripPlan::where('tour_id', $request->id)->delete();
                 $this->createTripPlanForTour($tripPlan, $request->id);
+
+                $images = $this->arrayImages($request->images);
+                Images::where('tour_id', $request->id)->delete();
+                $this->createImagesForTour($images, $request->id);
                 return response()->json(['msg' => "Update tour thành công", 'status' => 200], 200);
             }
         } 
@@ -164,12 +179,45 @@ class ToursController extends Controller
     public function search(Request $request)
     {
         return response()->json([
-            'tours' => Tours::where('tours.name', 'like', "%$request->name%")
+            'tours' => Tours::where('tours.name', 'like', "%" . $request->name. "%")
+                ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+                ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+                ->select('tours.*', 'users.name as travel_supplier_name')
+                ->get(),
+            'status' => 200,
+        ]);
+    }
+
+    public function searchByAddress(Request $request)
+    {
+        $tsTour = Tours::where('tours.address', 'like', "%" . $request->place . "%")
             ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
             ->join('users', 'ts_profiles.user_id', '=', 'users.id')
             ->select('tours.*', 'users.name as travel_supplier_name')
-            ->get(),
-            'status' => 200,
-        ]);
+            ->get()
+            ->toArray();
+        foreach($tsTour as $key => $value){
+            $tsTour[$key]['type_tour'] = "ts";
+        }
+
+        $psFromWhere = PersonalTours::where('personal_tours.from_where', 'like', "%" . $request->place . "%")
+            ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+            ->select('personal_tours.*', 'users.name as owner_name')
+            ->get()
+            ->toArray();
+        foreach($psFromWhere as $key => $value){
+            $psFromWhere[$key]['type_tour'] = "ps";
+        }
+
+        $psToWhere = PersonalTours::where('personal_tours.to_where', 'like', "%" . $request->place . "%")
+            ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+            ->select('personal_tours.*', 'users.name as owner_name')
+            ->get()
+            ->toArray();
+        foreach($psToWhere as $key => $value){
+            $psToWhere[$key]['type_tour'] = "ps";
+        }
+
+        return response()->json(array_merge($tsTour, $psFromWhere, $psToWhere));
     }
 }
