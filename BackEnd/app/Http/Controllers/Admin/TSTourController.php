@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Tours;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class TSTourController extends Controller
 {
@@ -12,54 +13,21 @@ class TSTourController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+        // $data = Tours::with(['tsProfile.user'])->paginate(10);
+        // return $data;
+        return view('pages.tsTour', [
+            'title' => 'List tours',
+            'tours' => Tours::with(['tsProfile'])->paginate(10),
+        ]); 
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Tours $tour)
     {
-        //
+        Tours::destroy($tour->id);
+
+        return redirect()->route('pst.index')->with('success', 'Deleted successfully!');
     }
 }

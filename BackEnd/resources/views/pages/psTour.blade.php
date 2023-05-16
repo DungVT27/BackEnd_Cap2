@@ -49,8 +49,10 @@
                                         <th scope="col"></th>
                                         <th scope="col">#</th>
                                         <th scope="col">Owner</th>
+                                        <th scope="col">Room_id</th>
                                         <th scope="col">Room</th>
                                         <th scope="col">Title</th>
+                                        <th scope="col">Description</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
@@ -65,13 +67,11 @@
                                             </th>
                                             <th scope="row">{{ ++$key }}</th>
                                             <td>{{ $tour->user->name }}</td>
+                                            <td>{{ $tour->room->id }}</td>
                                             <td>{{ $tour->room->name }}</td>
                                             <td style="max-width: 100px;">{{ $tour->name }}</td>
-                                            <td style="width: 130px;">
-                                                <a class="btn btn-outline-info user_list_btn"
-                                                        href="{{ route('user.show', ['id' => $tour->id]) }}">
-                                                        <i class="bi bi-person-vcard"></i>
-                                                    </a>
+                                            <td style="max-width: 180px;">{{ $tour->description }}</td>
+                                            <td style="width: 66px;">
                                                 <button type="button" class="btn btn-outline-danger user_list_btn"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#exampleModal{{ $tour->id }}">
