@@ -19,7 +19,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{ route('room.index') }}">
                 <i class="bi bi-people"></i>
-                <span>Room</span>
+                <span>Group</span>
             </a>
         </li><!-- End Room Nav -->
 

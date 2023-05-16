@@ -15,7 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->enum('gender', ['male', 'female', 'other']);
-            $table->string('avatar', 2048);
+            $table->string('avatar', 2048)->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')

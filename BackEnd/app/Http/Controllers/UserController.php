@@ -36,13 +36,21 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         User::create($request->all());
+        if ($request->roles == 'user') {
+            UserProfile::create([
+                'user_id' => User::select('id')->where('email', '=', $request->email)->get()[0]->id,
+            ]);
+        }else {
+            TSProfile::create([
+                'user_id' => User::select('id')->where('email', '=', $request->email)->get()[0]->id,
+            ]);
+        }
 
         return redirect()->route('user')->with('success', 'Created successfully!');
     }
 
     public function userProfile (string $id) {
         $data = User::with('userProfile')->find($id);
-        // $data = $data->user_profile;
 
         return $data;
     }

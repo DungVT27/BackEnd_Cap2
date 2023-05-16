@@ -72,9 +72,9 @@
                                                 </th>
                                                 <th scope="row">{{ ++$key }}</th>
                                                 <td>{{ $user->name }}</td>
-                                                <td>{{ $user->email }}</td>
+                                                <td style="max-width: 200px;">{{ $user->email }}</td>
                                                 <td>{{ $user->user_roles }}</td>
-                                                <td>{{ $user->phone_number }}</td>
+                                                <td style="max-width: 200px;">{{ $user->phone_number }}</td>
                                                 <td style="width: 176px;">
                                                     <a class="btn btn-outline-info user_list_btn"
                                                         href="{{ route('user.show', ['id' => $user->id]) }}">
