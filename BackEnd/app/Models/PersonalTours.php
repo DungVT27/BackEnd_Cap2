@@ -53,6 +53,6 @@ class PersonalTours extends Model
     }
 
     public function room(){
-        return $this->belongsTo(Rooms::class, 'owner_id');
+        return $this->belongsTo(Rooms::class, 'room_id');
     }
 }
