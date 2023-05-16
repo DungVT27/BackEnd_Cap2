@@ -43,6 +43,7 @@ Route::controller(UserProfileController::class)->prefix('user/profile')->group(f
 });
 
 Route::controller(UserProfileController::class)->prefix('user/')->group(function(){
+    Route::get('/{user_id}', 'show');
     Route::get('/{user_id}/allRoom', 'allRoom');
 });
 

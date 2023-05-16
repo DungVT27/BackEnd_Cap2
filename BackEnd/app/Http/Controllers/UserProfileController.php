@@ -29,9 +29,12 @@ class UserProfileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UserProfile $userProfile)
+    public function show(string $id)
     {
-        //
+        return response()->json([
+            'status' => 200,
+            'user_info' => UserProfile::with('user')->where('user_id', $id)->get()[0],
+        ]);
     }
 
     /**
