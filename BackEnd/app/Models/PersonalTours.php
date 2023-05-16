@@ -55,8 +55,4 @@ class PersonalTours extends Model
     public function room(){
         return $this->belongsTo(Rooms::class, 'owner_id');
     }
-
-    public function rooms(){
-        return $this->belongsToMany(User::class, 'rooms', 'pt_id', 'user_id');
-    }
 }

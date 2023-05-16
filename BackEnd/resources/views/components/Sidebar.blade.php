@@ -23,6 +23,20 @@
             </a>
         </li><!-- End Room Nav -->
 
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('tst.index') }}">
+                <i class="bi bi-people"></i>
+                <span>Suplier Tour</span>
+            </a>
+        </li><!-- End ts tour Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{ route('pst.index') }}">
+                <i class="bi bi-people"></i>
+                <span>Personal Tour</span>
+            </a>
+        </li><!-- End user tour Nav -->
+
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">

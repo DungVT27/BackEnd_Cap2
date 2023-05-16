@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\PSTourController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\TSTourController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +46,18 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{room}', 'destroy')->name('room.destroy');
         });
     });
-});
 
+    Route::controller(PSTourController::class)->group(function () {
+        Route::prefix('pstour')->group(function () {
+            Route::get('/', 'index')->name('pst.index');
+            Route::delete('/{tour}', 'destroy')->name('pst.destroy');
+        });
+    });
+
+    Route::controller(TSTourController::class)->group(function () {
+        Route::prefix('tstour')->group(function () {
+            Route::get('/', 'index')->name('tst.index');
+            Route::delete('/{tour}', 'destroy')->name('tst.destroy');
+        });
+    });
+});

@@ -37,7 +37,7 @@
                     @csrf
                     @method('DELETE') --}}
                     <div class="card-body">
-                        <h5 class="card-title">Users <span>|
+                        <h5 class="card-title">Personal tour <span>|
                                 List</span></h5>
                         {{-- <button type="submit" class="btn btn-danger">
                             <i class="bi bi-trash"></i>
@@ -49,14 +49,13 @@
                                         <th scope="col"></th>
                                         <th scope="col">#</th>
                                         <th scope="col">Owner</th>
-                                        <th scope="col">Owner_phone</th>
+                                        <th scope="col">Room</th>
                                         <th scope="col">Title</th>
-                                        <th scope="col">Description</th>
                                         <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($rooms as $key => $room)
+                                    @foreach ($tours as $key => $tour)
                                         <tr>
                                             <th scope="row">
                                                 <div class="form-check">
@@ -65,23 +64,26 @@
                                                 </div>
                                             </th>
                                             <th scope="row">{{ ++$key }}</th>
-                                            <td>{{ $room->user->name }}</td>
-                                            <td>{{ $room->user->phone_number }}</td>
-                                            <td style="max-width: 100px;">{{ $room->name }}</td>
-                                            <td style="max-width: 200px;">{{ $room->description }}</td>
-                                            <td style="width: 66px;">
+                                            <td>{{ $tour->user->name }}</td>
+                                            <td>{{ $tour->room->name }}</td>
+                                            <td style="max-width: 100px;">{{ $tour->name }}</td>
+                                            <td style="width: 130px;">
+                                                <a class="btn btn-outline-info user_list_btn"
+                                                        href="{{ route('user.show', ['id' => $tour->id]) }}">
+                                                        <i class="bi bi-person-vcard"></i>
+                                                    </a>
                                                 <button type="button" class="btn btn-outline-danger user_list_btn"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal{{ $room->id }}">
+                                                    data-bs-target="#exampleModal{{ $tour->id }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
                                         <!-- Modal -->
-                                        <form action="{{ route('room.destroy', ['room' => $room->id]) }}" method="post">
+                                        <form action="{{ route('pst.destroy', ['tour' => $tour->id]) }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                            <div class="modal fade" id="exampleModal{{ $room->id }}" tabindex="0"
+                                            <div class="modal fade" id="exampleModal{{ $tour->id }}" tabindex="0"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -93,7 +95,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             Are you sure you want to remove room
-                                                            <b> {{ $room->name }} </b>
+                                                            <b> {{ $tour->name }} </b>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit"
@@ -110,7 +112,7 @@
                             </table>
                         </div>
                         <div>
-                            {{ $rooms->links() }}
+                            {{ $tours->links() }}
                         </div>
                     </div>
                     {{-- </form> --}}

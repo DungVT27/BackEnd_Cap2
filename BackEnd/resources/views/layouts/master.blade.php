@@ -53,7 +53,7 @@
     @yield('content')
 
     <!-- ======= Footer ======= -->
-    @include('components.Footer')
+    {{-- @include('components.Footer') --}}
 </body>
 
 </html>
