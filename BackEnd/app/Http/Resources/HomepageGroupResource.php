@@ -22,6 +22,7 @@ class HomepageGroupResource extends JsonResource
             'to_date' => $this->to_date,
             'from_where' => $this->from_where,
             'to_where' => $this->to_where,
+            'image' => $this->image,
             'host' => $this->user->name,
             'room' => [
                 'owner' => $this->room->user->name,

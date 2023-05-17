@@ -54,14 +54,17 @@ class PersonalToursController extends Controller
 
         $tour = PersonalTours::where('personal_tours.id', $id)
             ->join('users', 'personal_tours.owner_id', '=', 'users.id')
-            ->select('personal_tours.*', 'users.name as owner_name')
+            ->join('user_profiles', 'personal_tours.owner_id', '=', 'user_profiles.user_id')
+            ->select('personal_tours.*', 'users.name as owner_name', 'user_profiles.avatar as owner_avatar')
             ->get()
             ->toArray();
 
-        $members = PersonalTours::find($id)->room->members->count();
+        // $avatar = PersonalTours::find($id)->user()->userProfile;
+        // dd($avatar);
+        $members = PersonalTours::find($id)->room->members()->where('is_confirm', true)->count();
         $tour[0]['members'] = $members;
 
-        $memberList = PersonalTours::find($id)->room->members->toArray(); 
+        $memberList = PersonalTours::find($id)->room->members()->where('is_confirm', true)->get()->toArray(); 
         $tour[0]['member_list'] = $memberList;
         
         return response()->json($tour);
