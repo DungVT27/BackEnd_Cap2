@@ -361,53 +361,40 @@ tittle
 
               <div class="activity">
 
-                <div class="activity-item d-flex">
-                  <div class="activite-label">32 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                  <div class="activity-content">
-                    Quia quae rerum <a href="#" class="fw-bold text-dark">explicabo officiis</a> beatae
-                  </div>
+                @foreach ($psTourStartToday as $psTourStartTodayItem)
+                  <div class="activity-item d-flex">
+                    <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                    <div class="activity-content">
+                      {{ $psTourStartTodayItem->name }} của {{ $psTourStartTodayItem->owner_name }} bất đầu đi ngày hôm nay
+                    </div>
                 </div><!-- End activity item-->
+                @endforeach
 
-                <div class="activity-item d-flex">
-                  <div class="activite-label">56 min</div>
-                  <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptatem blanditiis blanditiis eveniet
-                  </div>
-                </div><!-- End activity item-->
+                @foreach ($psTourEndToday as $psTourEndTodayItem)
+                  <div class="activity-item d-flex">
+                    <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                    <div class="activity-content">
+                      {{ $psTourEndTodayItem->name }} của {{ $psTourEndTodayItem->owner_name }} sẽ kết thúc hôm nay
+                    </div>
+                  </div><!-- End activity item-->
+                @endforeach
 
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 hrs</div>
-                  <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
-                  <div class="activity-content">
-                    Voluptates corrupti molestias voluptatem
-                  </div>
-                </div><!-- End activity item-->
+                @foreach ($orderedToday as $orderedTodayItem)
+                  <div class="activity-item d-flex">
+                    <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
+                    <div class="activity-content">
+                      {{ $orderedTodayItem->user_name }} đã đặt {{ $orderedTodayItem->tour_name }} {{ $orderedTodayItem->tickets }} vé
+                    </div>
+                  </div><!-- End activity item-->
+                @endforeach
 
-                <div class="activity-item d-flex">
+                {{-- <div class="activity-item d-flex">
                   <div class="activite-label">1 day</div>
                   <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
                   <div class="activity-content">
                     Tempore autem saepe <a href="#" class="fw-bold text-dark">occaecati voluptatem</a> tempore
                   </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">2 days</div>
-                  <i class='bi bi-circle-fill activity-badge text-warning align-self-start'></i>
-                  <div class="activity-content">
-                    Est sit eum reiciendis exercitationem
-                  </div>
-                </div><!-- End activity item-->
-
-                <div class="activity-item d-flex">
-                  <div class="activite-label">4 weeks</div>
-                  <i class='bi bi-circle-fill activity-badge text-muted align-self-start'></i>
-                  <div class="activity-content">
-                    Dicta dolorem harum nulla eius. Ut quidem quidem sit quas
-                  </div>
-                </div><!-- End activity item-->
+                </div><!-- End activity item--> --}}
 
               </div>
 
