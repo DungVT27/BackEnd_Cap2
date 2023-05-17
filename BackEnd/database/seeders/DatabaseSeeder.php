@@ -92,6 +92,25 @@ class DatabaseSeeder extends Seeder
             'avatar' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrmlMm8jN0GqRjo2L9b6OBtm8gJbJS9cIZfw&usqp=CAU",
         ]);
 
+        Rooms::create([
+            'room_owner' => 2,
+            'name' => "Phòng đi bay",
+            'description' => "Không bay không ngủ",
+            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
+        ]);
+
+        User::factory(50)->create([
+            'user_roles' => 'user'
+        ]);
+        
+        User::factory(50)->create([
+            'user_roles' => 'ts'
+        ]);
+
+        UserProfile::factory(50)->create();
+        TSProfile::factory(50)->create();
+        Rooms::factory(50)->create();
+
         Tours::create([
             'ts_id' => 1,
             'name' => "Đà Nẵng Tour",
@@ -115,7 +134,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Tours::create([
-            'ts_id' => 1,
+            'ts_id' => 3,
             'name' => "Hồ Chí Minh Tour",
             'address' => "Hồ Chí Minh",
             'description'=> "Tour giá đắt",
@@ -125,24 +144,31 @@ class DatabaseSeeder extends Seeder
             'slot' => 10,
         ]);
 
-
-        Rooms::create([
-            'room_owner' => 1,
-            'name' => "Phòng đi chơi",
-            'description' => "Không chơi không về",
-            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
+        Tours::create([
+            'ts_id' => 4,
+            'name' => "Hồ Chí Minh Tour",
+            'address' => "Hồ Chí Minh",
+            'description'=> "Tour giá đắt",
+            'from_date' => "2023-05-10",
+            'to_date' => "2023-05-14",
+            'price' => 1000000000,
+            'slot' => 10,
         ]);
 
-        Rooms::create([
-            'room_owner' => 2,
-            'name' => "Phòng đi bay",
-            'description' => "Không bay không ngủ",
-            'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
+        Tours::create([
+            'ts_id' => 5,
+            'name' => "Hồ Chí Minh Tour",
+            'address' => "Hồ Chí Minh",
+            'description'=> "Tour giá đắt",
+            'from_date' => "2023-05-10",
+            'to_date' => "2023-05-14",
+            'price' => 1000000000,
+            'slot' => 10,
         ]);
 
         PersonalTours::create([
             'name' => "Chuyến đi đến Đà Nẵng",
-            'owner_id' => 1,
+            'owner_id' => 2,
             'room_id' => 1,
             'description' => "Tham quan Đà Nẵng",
             'from_date' => "2023-05-10",
@@ -156,7 +182,7 @@ class DatabaseSeeder extends Seeder
 
         PersonalTours::create([
             'name' => "Chuyến đi đến Huế",
-            'owner_id' => 1,
+            'owner_id' => 3,
             'room_id' => 1,
             'description' => "Tham quan Huế",
             'from_date' => "2023-05-10",
@@ -170,7 +196,7 @@ class DatabaseSeeder extends Seeder
 
         PersonalTours::create([
             'name' => "Chuyến đi đến Hà Nội",
-            'owner_id' => 2,
+            'owner_id' => 4,
             'room_id' => 2,
             'description' => "Tham quan Hà Nội",
             'from_date' => "2023-05-10",
@@ -181,91 +207,7 @@ class DatabaseSeeder extends Seeder
             'to_where' => "Hà Nội",
             'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
-            'tour_id' => 1,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkuKpsGUvhvFIxZo6dKt-Dw3vpM-OMQCWCEg&usqp=CAU",
-            'tour_id' => 1,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyQBqDQaZ7FyWbRp1DjhLX6mS5fuh-BE1E8w&usqp=CAU",
-            'tour_id' => 1,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyQBqDQaZ7FyWbRp1DjhLX6mS5fuh-BE1E8w&usqp=CAU",
-            'tour_id' => 1,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyQBqDQaZ7FyWbRp1DjhLX6mS5fuh-BE1E8w&usqp=CAU",
-            'tour_id' => 1,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSt1wLLHHU4HtAz4JZmBDdF8RWbih0eFfQ7A&usqp=CAU",
-            'tour_id' => 2,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6CI2DUQeZnMIXjpsbjshPh6i9TtfnA1CCTQ&usqp=CAU",
-            'tour_id' => 2,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR43C7pCHhsCNMH9l7lViH1OEcaWiAScqX2xO7gEtKVM31t_pS3yngWderyOokTTbk5Hm8&usqp=CAU",
-            'tour_id' => 2,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx8U5QtZkqP6RYstwTRwsMkBg1kmXHCWzPvfbjwrRbWcCteyhj9_osuVfjFztXsJzEEXE&usqp=CAU",
-            'tour_id' => 2,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMslPzJGOhZ9aKN_h3NMhX_NFJwVZ9yM5R2w&usqp=CAU",
-            'tour_id' => 2,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4pmKfAFN4FIRnwijPVeFQwIqiDAhHWtF2Ng&usqp=CAU",
-            'tour_id' => 3,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStL7ay5eagcZf9C_6-Ks8sjBzVhPxc6aVBcw&usqp=CAU",
-            'tour_id' => 3,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQY24E2PIBiu9Q4XnK-gSqeXpKGfWrVoGv5tg&usqp=CAU",
-            'tour_id' => 3,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxWE3xIAqHHhTLPYXdp4IrB-3w0b2VXLoJVQ&usqp=CAU",
-            'tour_id' => 3,
-        ]);
-
-        Images::create([
-            'image_url' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9ztAPzTva9jhfaCZY-l6LeJVo62JQPln6Ig&usqp=CAU",
-            'tour_id' => 3,
-        ]);
-
-        User::factory(50)->create([
-            'user_roles' => 'user'
-        ]);
         
-        User::factory(50)->create([
-            'user_roles' => 'ts'
-        ]);
-
-        UserProfile::factory(50)->create();
-        TSProfile::factory(50)->create();
+        Images::factory(50)->create();
     }
 }

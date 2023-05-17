@@ -65,23 +65,27 @@
                                                 </div>
                                             </th>
                                             <th scope="row">{{ ++$key }}</th>
-                                            <td>{{ $tour->name }}</td>
-                                            <td>{{ $tour->name }}</td>
-                                            <td>{{ $tour->price }}</td>
-                                            <td style="max-width: 180px;">{{ $tour->description }}</td>
+                                            <td>
+                                                <a href="{{ route('user.show', ['id' => $tour->id]) }}">
+                                                    {{ $tour->name }}
+                                                </a>    
+                                            </td>
+                                            <td>{{ $tour->tours[0]->name }}</td>
+                                            <td>{{ $tour->tours[0]->price }}</td>
+                                            <td style="max-width: 180px;">{{ $tour->tours[0]->description }}</td>
                                             <td style="width: 66px;">
                                                 <button type="button" class="btn btn-outline-danger user_list_btn"
                                                     data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal{{ $tour->id }}">
+                                                    data-bs-target="#exampleModal{{ $tour->tours[0]->id }}">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
                                             </td>
                                         </tr>
                                         <!-- Modal -->
-                                        <form action="{{ route('tst.destroy', ['tour' => $tour->id]) }}" method="post">
+                                        <form action="{{ route('tst.destroy', ['tour' => $tour->tours[0]->id]) }}" method="post">
                                             @csrf
                                             @method('DELETE')
-                                            <div class="modal fade" id="exampleModal{{ $tour->id }}" tabindex="0"
+                                            <div class="modal fade" id="exampleModal{{ $tour->tours[0]->id }}" tabindex="0"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -93,7 +97,7 @@
                                                         </div>
                                                         <div class="modal-body">
                                                             Are you sure you want to remove room
-                                                            <b> {{ $tour->name }} </b>
+                                                            <b> {{ $tour->tours[0]->name }} </b>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit"

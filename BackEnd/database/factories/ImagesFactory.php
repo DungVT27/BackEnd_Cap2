@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Helpers\HelpersFacade;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,8 @@ class ImagesFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'image_url' => HelpersFacade::tripImageUrlGenerate(),
+            'tour_id' => rand(1,5),
         ];
     }
 }

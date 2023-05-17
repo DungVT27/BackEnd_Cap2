@@ -22,12 +22,6 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    // private $user;
-
-    // public function __construct(User $user){
-    //     $this->user = $user;
-    // }
-
     /**
      * The attributes that are mass assignable.
      *
@@ -76,7 +70,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public function tours(){
-        return $this->hasMany(Tours::class);
+        return $this->hasManyThrough(Tours::class, TSProfile::class, 'user_id', 'ts_id');
     }
 
     public function personal_tours(){
@@ -98,6 +92,8 @@ class User extends Authenticatable implements JWTSubject
     public function notifications(){
         return $this->hasMany(Notifications::class, 'receiver_id', 'id');
     }
+
+
 
     
     /**

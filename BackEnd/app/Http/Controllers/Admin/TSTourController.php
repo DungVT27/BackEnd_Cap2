@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tours;
+use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class TSTourController extends Controller
@@ -13,11 +14,12 @@ class TSTourController extends Controller
      */
     public function index()
     {
-        // $data = Tours::with(['tsProfile.user'])->paginate(10);
+        // return User::withWhereHas('tours')->get()[0]->tours;
+        // $data = Tours::paginate(10);
         // return $data;
         return view('pages.tsTour', [
             'title' => 'List tours',
-            'tours' => Tours::with(['tsProfile'])->paginate(10),
+            'tours' => User::withWhereHas('tours')->paginate(10),
         ]); 
     }
 
@@ -28,6 +30,6 @@ class TSTourController extends Controller
     {
         Tours::destroy($tour->id);
 
-        return redirect()->route('pst.index')->with('success', 'Deleted successfully!');
+        return redirect()->route('tst.index')->with('success', 'Deleted successfully!');
     }
 }

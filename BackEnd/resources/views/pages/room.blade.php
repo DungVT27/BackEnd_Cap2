@@ -65,7 +65,11 @@
                                                 </div>
                                             </th>
                                             <th scope="row">{{ ++$key }}</th>
-                                            <td>{{ $room->user->name }}</td>
+                                            <td>
+                                                <a href="{{ route('user.show', ['id' => $room->user->id]) }}">
+                                                    {{ $room->user->name }}
+                                                </a>    
+                                            </td>
                                             <td>{{ $room->user->phone_number }}</td>
                                             <td style="max-width: 100px;">{{ $room->name }}</td>
                                             <td style="max-width: 200px;">{{ $room->description }}</td>
