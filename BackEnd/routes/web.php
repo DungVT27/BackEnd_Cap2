@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\PSTourController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\TSTourController;
 
@@ -24,9 +25,7 @@ Route::prefix('admin')->controller(\App\Http\Controllers\Auth\AuthController::cl
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('pages.dashboard');
-    })->name('dashboard');
+    Route::get('/', [DashboardController::class, 'home'])->name('dashboard');
     
     Route::controller(UserController::class)->group(function () {
         Route::prefix('user')->group(function () {

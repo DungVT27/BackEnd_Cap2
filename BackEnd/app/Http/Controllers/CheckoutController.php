@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 use App\Models\Ordereds;
 use App\Models\Transactions;
-// session_start();
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
+
 
 class CheckoutController extends Controller
 {
