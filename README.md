@@ -39,3 +39,23 @@ cd BackEnd
 ```bash
 php artisan serve
 ```
+## Payment bank number test 
+```bash
+Bank : NCB
+```
+
+```bash
+Credit Number : 9704198526191432198
+```
+
+```bash
+Owner Name : NGUYEN VAN A
+```
+
+```bash
+Realease Date : 07/15
+```
+
+```bash
+OTP : 123456
+```
