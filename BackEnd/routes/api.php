@@ -9,6 +9,7 @@ use App\Http\Controllers\ToursController;
 use App\Http\Controllers\TSProfileController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\RoomsController;
+use App\Http\Controllers\OrderedsController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\NotificationsController;
 use App\Models\Notifications;
@@ -108,4 +109,8 @@ Route::prefix('notification')->group(function(){
     Route::post('/send', [NotificationsController::class, 'send']);
     Route::get('/read', [NotificationsController::class, 'read']);
     Route::get('/getNotification', [NotificationsController::class, 'getNotification']);
+});
+
+Route::prefix('ordered')->group(function(){
+    Route::get('/userOrderedHistory', [OrderedsController::class, 'historyOrderedOfUser']);
 });
