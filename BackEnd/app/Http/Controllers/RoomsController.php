@@ -6,6 +6,7 @@ use App\Models\Rooms;
 use App\Models\Members;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RoomsController extends Controller
 {
@@ -214,10 +215,17 @@ class RoomsController extends Controller
         }
         
         $rooms = Members::join('rooms', 'members.room_id', '=', 'rooms.id')
+            ->join('users', 'rooms.room_owner', '=', 'users.id')
             ->where('user_id', $request->user_id)
             ->where('is_confirm', true)
-            ->select('rooms.*')
+            ->select('rooms.*', 'users.name as host_name')
+            ->orderBy('rooms.id', 'asc')
             ->get();
+        foreach($rooms as $room){
+            $members = Rooms::find($room->id)->members()->where('is_confirm', true)->count();
+            $room->members = $members; 
+        }
+
 
         return response()->json($rooms);
     }
