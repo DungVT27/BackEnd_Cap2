@@ -200,13 +200,25 @@ class RoomsController extends Controller
                 'msg' => 'Người dùng không tồn tại',
             ]);
         }
-        // $rooms = Rooms::where('room_owner', $request->user_id)->members()->where('is_confirm', true)->get();
+
+        return response()->json(Rooms::where('room_owner', $request->user_id)->get());
+    }
+
+    public function roomUserJoin(Request $request)
+    {
+        if(empty(User::find($request->user_id))){
+            return response()->json([
+                'status' => 404,
+                'msg' => 'Người dùng không tồn tại',
+            ]);
+        }
+        
         $rooms = Members::join('rooms', 'members.room_id', '=', 'rooms.id')
             ->where('user_id', $request->user_id)
             ->where('is_confirm', true)
             ->select('rooms.*')
             ->get();
-        // dd($rooms);
+
         return response()->json($rooms);
     }
 }
