@@ -10,6 +10,12 @@ use Illuminate\Http\Request;
 class CheckoutController extends Controller
 {
     public function checkout(){
+        if(isset($_COOKIE['user_id']) && isset($_COOKIE['tour_id']) && isset($_COOKIE['price']) && isset($_COOKIE['amount'])){
+            setcookie('user_id', 0, time() - 1);
+            setcookie('tour_id', 0, time() - 1);
+            setcookie('price', 0, time() - 1);
+            setcookie('amount', 0, time() - 1);
+        }
         $time = time();
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "http://127.0.0.1:8000/api/payment/done";

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rooms;
+use App\Models\Members;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -199,6 +200,13 @@ class RoomsController extends Controller
                 'msg' => 'Người dùng không tồn tại',
             ]);
         }
-        return response()->json(Rooms::where('room_owner', $request->user_id)->get());
+        // $rooms = Rooms::where('room_owner', $request->user_id)->members()->where('is_confirm', true)->get();
+        $rooms = Members::join('rooms', 'members.room_id', '=', 'rooms.id')
+            ->where('user_id', $request->user_id)
+            ->where('is_confirm', true)
+            ->select('rooms.*')
+            ->get();
+        // dd($rooms);
+        return response()->json($rooms);
     }
 }
