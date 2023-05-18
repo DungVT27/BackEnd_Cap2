@@ -40,22 +40,23 @@ cd BackEnd
 php artisan serve
 ```
 ## Payment bank number test 
+Bank 
 ```bash
-Bank : NCB
+NCB
 ```
-
+Credit Number
 ```bash
-Credit Number : 9704198526191432198
+9704198526191432198
 ```
-
+Owner Name 
 ```bash
-Owner Name : NGUYEN VAN A
+NGUYEN VAN A
 ```
-
+Realease Date
 ```bash
-Realease Date : 07/15
+07/15
 ```
-
+OTP
 ```bash
-OTP : 123456
+123456
 ```
