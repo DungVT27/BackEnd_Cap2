@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Ordereds;
+use App\Models\Tours;
 use App\Models\Transactions;
 
 use Illuminate\Http\Request;
@@ -10,6 +11,12 @@ use Illuminate\Http\Request;
 class CheckoutController extends Controller
 {
     public function checkout(){
+        $tour = Tours::where('id', $_POST['tour_id'])->get()->toArray();
+        $slot = $tour[0]['slot'];
+        if($slot < $_POST['amount']){
+            return back();
+        }
+
         if(isset($_COOKIE['user_id']) && isset($_COOKIE['tour_id']) && isset($_COOKIE['price']) && isset($_COOKIE['amount'])){
             setcookie('user_id', 0, time() - 1);
             setcookie('tour_id', 0, time() - 1);
@@ -86,10 +93,16 @@ class CheckoutController extends Controller
 
     public function done(Request $request)
     {
+        $tourTickets = Tours::where('id', $_COOKIE['tour_id'])->get()->toArray();
+        $slot = $tourTickets[0]['slot'] - $_COOKIE['amount'];
+        Tours::find($_COOKIE['tour_id'])->update([
+            'slot' => $slot,
+        ]);
+
         // dd($request->all());
         $orderId = Ordereds::insertGetId([
             'user_id' => $_COOKIE['user_id'],
-            'tour_id' =>$_COOKIE['tour_id'],
+            'tour_id' => $_COOKIE['tour_id'],
             'price' => $_COOKIE['price'], 
             'tickets' => $_COOKIE['amount'],
             'created_at' => now(),
