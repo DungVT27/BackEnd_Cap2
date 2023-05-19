@@ -55,4 +55,21 @@ class PersonalTours extends Model
     public function room(){
         return $this->belongsTo(Rooms::class, 'room_id');
     }
+
+    public function psTourStartInDate($date)
+    {
+        return self::where('from_date', $date)
+            ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+            ->select('personal_tours.*', 'users.name as owner_name')
+            ->get();
+    }
+
+    
+    public function psTourEndInDate($date)
+    {
+        return self::where('to_date', $date)
+            ->join('users', 'personal_tours.owner_id', '=', 'users.id')
+            ->select('personal_tours.*', 'users.name as owner_name')
+            ->get();
+    }
 }

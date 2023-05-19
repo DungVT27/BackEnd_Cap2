@@ -34,14 +34,14 @@ Dashboard
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="?orderedToday">Today</a></li>
+                    <li><a class="dropdown-item" href="{{ route('dashboard')}}">This Month</a></li>
+                    <li><a class="dropdown-item" href="?orderedLastMonth">Last Month</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Ordered <span>| This Month</span></h5>
+                  <h5 class="card-title">Ordered <span>| {{ $orderedTilte }}</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -69,14 +69,14 @@ Dashboard
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="?revenueToday">Today</a></li>
+                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">This Month</a></li>
+                    <li><a class="dropdown-item" href="?revenueLastMonth">Last Month</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| This Month</span></h5>
+                  <h5 class="card-title">Revenue <span>| {{ $revenueTitle }}</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -105,14 +105,13 @@ Dashboard
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">This Month</a></li>
+                    <li><a class="dropdown-item" href="?customerLastMonth">Last Month</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Customers <span>| This Month</span></h5>
+                  <h5 class="card-title">Customers <span>| {{ $newUserTitle }}</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
@@ -134,21 +133,8 @@ Dashboard
             <div class="col-12">
               <div class="card">
 
-                <div class="filter">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li class="dropdown-header text-start">
-                      <h6>Filter</h6>
-                    </li>
-
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
-                  </ul>
-                </div>
-
                 <div class="card-body">
-                  <h5 class="card-title">Reports <span>/Today</span></h5>
+                  <h5 class="card-title">Reports <span>/This Year</span></h5>
 
                   <!-- Line Chart -->
                   <div id="reportsChart"></div>
@@ -261,14 +247,13 @@ Dashboard
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">This Month</a></li>
+                    <li><a class="dropdown-item" href="?recentOrderLastMonth">Last Month</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Recent Ordered <span>| This Month</span></h5>
+                  <h5 class="card-title">Recent Ordered <span>| {{ $recentOrderedTitle }}</span></h5>
 
                   <table class="table table-borderless datatable">
                     <thead>
@@ -310,14 +295,13 @@ Dashboard
                       <h6>Filter</h6>
                     </li>
 
-                    <li><a class="dropdown-item" href="#">Today</a></li>
-                    <li><a class="dropdown-item" href="#">This Month</a></li>
-                    <li><a class="dropdown-item" href="#">This Year</a></li>
+                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">This Month</a></li>
+                    <li><a class="dropdown-item" href="?topOwnerLastMonth">Last Month</a></li>
                   </ul>
                 </div>
 
                 <div class="card-body pb-0">
-                  <h5 class="card-title">Top Owner Has Most Booked Tour <span>| This month</span></h5>
+                  <h5 class="card-title">Top Owner Has Most Booked Tour <span>| {{ $topOwnerTitle }}</span></h5>
 
                   <table class="table table-borderless">
                     <thead>
@@ -358,18 +342,6 @@ Dashboard
 
           <!-- Recent Activity -->
           <div class="card">
-            <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li class="dropdown-header text-start">
-                  <h6>Filter</h6>
-                </li>
-
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-              </ul>
-            </div>
 
             <div class="card-body">
               <h5 class="card-title">Recent Activity <span>| Today</span></h5>

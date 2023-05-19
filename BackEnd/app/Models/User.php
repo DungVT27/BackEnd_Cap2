@@ -12,6 +12,7 @@ use App\Models\Tours;
 use App\Models\Rooms;
 use App\Models\Notifications;
 use App\Models\UserProfile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -93,7 +94,31 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Notifications::class, 'receiver_id', 'id');
     }
 
+    public function newUserInMonth($month, $year)
+    {
+        return self::whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)->count();
+    }
 
+    public function numberUserWithRole($role = null)
+    {
+        $query = self::select(DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'), DB::raw('COUNT(*) as new_users'))
+            ->where('created_at', '>=', DB::raw('DATE_SUB(NOW(), INTERVAL 1 YEAR)'));
+        
+        if ($role != null) {
+            $query = $query->where('user_roles', $role);
+        }
+
+        $query = $query->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->get()
+            ->mapWithKeys(function ($query) {
+                return [$query['month'] => $query['new_users']];
+            })
+            ->toArray();
+        
+        return $query;
+    }
 
     
     /**

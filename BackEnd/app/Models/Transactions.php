@@ -32,4 +32,15 @@ class Transactions extends Model
     }
 
     protected $table = 'transactions';
+
+    public function revenueInMonth($month, $year)
+    {
+        return self::whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)->sum('amount');
+    }
+
+    public function revenueInDate($date)
+    {
+        return self::whereDate('created_at', $date)->sum('amount');
+    }
 }
