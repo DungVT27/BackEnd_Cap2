@@ -60,6 +60,7 @@ Route::prefix('homepage')->group(function(){
 Route::prefix('ts/tour')->group(function(){
     Route::get('/', [ToursController::class, 'index']);
     Route::get('/search', [ToursController::class, 'search']);
+    Route::get('/ordereds', [ToursController::class, 'tsTourOrdereds']);
     Route::get('/{id}', [ToursController::class, 'show']);
     Route::post('/create', [ToursController::class, 'store']);
     Route::put('/update/{id}', [ToursController::class, 'update']);

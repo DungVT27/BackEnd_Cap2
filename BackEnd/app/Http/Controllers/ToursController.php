@@ -6,6 +6,10 @@ use App\Models\Tours;
 use App\Models\PersonalTours;
 use App\Models\TripPlan;
 use App\Models\Images;
+use App\Models\Ordereds;
+use App\Models\UserProfile;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Resources\HomepageToursResource;
 use App\Http\Resources\TourDetailResource;
@@ -304,5 +308,25 @@ class ToursController extends Controller
                 return response()->json(array_merge($tsTour, $psFromWhere, $psToWhere));
             }
         }
+    }
+
+    public function tsTourOrdereds(Request $request)
+    {
+        $tsTour = Tours::where('ts_id', $request->ts_id)->get()->pluck('id');
+
+        $tourOrdereds = Ordereds::whereIn('ordereds.tour_id', $tsTour)
+        ->join('tours', 'ordereds.tour_id', '=', 'tours.id')
+        ->join('users', 'ordereds.user_id', '=', 'users.id')
+        ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+        ->select('tours.name as name_tour', 'tours.from_date', 'tours.to_date', 
+            'users.name as user_name', 'user_profiles.gender', 'users.email', 
+            'users.phone_number', 'ordereds.tickets', 
+            DB::raw('ordereds.tickets*ordereds.price as total_payment'))
+        ->get();
+
+        return response()->json([
+            $tourOrdereds
+        ]);
+
     }
 }
