@@ -174,8 +174,15 @@ class ToursController extends Controller
     }
 
     public function allTourOfTS(Request $request){
+        $toursId = Tours::where('ts_id', $request->id)->get()->pluck('id')->toArray();
+        $allTours = Tours::where('ts_id', $request->id)->get()->toArray();
+        for($i = 0; $i < count($toursId); $i++){
+            $images = Tours::find($toursId[$i])->images->toArray();
+            $allTours[$i]['images'] = $images;
+        }
+
         return response()->json([
-            'all_tour' => Tours::where('ts_id', $request->id)->get(),
+            'all_tour' => $allTours,
             'status' => 200,
         ]);
     }
@@ -315,18 +322,38 @@ class ToursController extends Controller
         $tsTour = Tours::where('ts_id', $request->ts_id)->get()->pluck('id');
 
         $tourOrdereds = Ordereds::whereIn('ordereds.tour_id', $tsTour)
-        ->join('tours', 'ordereds.tour_id', '=', 'tours.id')
-        ->join('users', 'ordereds.user_id', '=', 'users.id')
-        ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-        ->select('tours.name as name_tour', 'tours.from_date', 'tours.to_date', 
-            'users.name as user_name', 'user_profiles.gender', 'users.email', 
-            'users.phone_number', 'ordereds.tickets', 
-            DB::raw('ordereds.tickets*ordereds.price as total_payment'))
-        ->get();
+            ->join('tours', 'ordereds.tour_id', '=', 'tours.id')
+            ->join('users', 'ordereds.user_id', '=', 'users.id')
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->select('tours.name as name_tour', 'tours.from_date', 'tours.to_date', 
+                'users.name as user_name', 'user_profiles.gender', 'users.email', 
+                'users.phone_number', 'ordereds.tickets', 
+                DB::raw('ordereds.tickets*ordereds.price as total_payment'))
+            ->get();
 
         return response()->json([
             $tourOrdereds
         ]);
 
+    }
+
+    public function searchUserOrdered(Request $request)
+    {
+        $tsTour = Tours::where('ts_id', $request->ts_id)->get()->pluck('id');
+
+        $tourOrdereds = Ordereds::whereIn('ordereds.tour_id', $tsTour)
+            ->where('users.name', 'like', "%" . $request->name . "%")
+            ->join('tours', 'ordereds.tour_id', '=', 'tours.id')
+            ->join('users', 'ordereds.user_id', '=', 'users.id')
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->select('tours.name as name_tour', 'tours.from_date', 'tours.to_date', 
+                'users.name as user_name', 'user_profiles.gender', 'users.email', 
+                'users.phone_number', 'ordereds.tickets', 
+                DB::raw('ordereds.tickets*ordereds.price as total_payment'))
+            ->get();
+
+        return response()->json([
+            $tourOrdereds
+        ]);
     }
 }
