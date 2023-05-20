@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 use App\Models\Ordereds;
 use App\Models\Tours;
+use App\Models\User;
 use App\Models\Transactions;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UserOrderedSuccess;
+use App\Mail\TSOrderedSuccess;
 
 use Illuminate\Http\Request;
 
@@ -93,14 +97,18 @@ class CheckoutController extends Controller
 
     public function done(Request $request)
     {
+        $user = User::where('id', $_COOKIE['user_id'])->get()->toArray();
+        // dd($user);
+
         $tourTickets = Tours::where('id', $_COOKIE['tour_id'])->get()->toArray();
         $slot = $tourTickets[0]['slot'] - $_COOKIE['amount'];
         Tours::find($_COOKIE['tour_id'])->update([
             'slot' => $slot,
         ]);
 
+
         // dd($request->all());
-        $orderId = Ordereds::insertGetId([
+        $order = Ordereds::create([
             'user_id' => $_COOKIE['user_id'],
             'tour_id' => $_COOKIE['tour_id'],
             'price' => $_COOKIE['price'], 
@@ -110,12 +118,28 @@ class CheckoutController extends Controller
 
         // dd($request->vnp_Amount);
         Transactions::create([
-            'ordered_id' => $orderId,
+            'ordered_id' => $order->id,
             'amount' => $request->vnp_Amount,
             'bankCode' => $request->vnp_BankCode,
             'cardType' => $request->vnp_CardType,
             'responseCode' => $request->vnp_ResponseCode,
         ]);
+
+        $orderDetail = Ordereds::join('tours', 'ordereds.tour_id', '=', 'tours.id')
+            ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+            ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+            ->select('users.name as user_name', 'users.email', 'tours.name as tour_name', 'tours.from_date', 'tours.to_date', 'ordereds.*')
+            ->where('ordereds.id', $order->id)
+            ->get()
+            ->toArray();
+        $orderDetail[0]['orderedUser'] = $user;
+        // dd($orderDetail);
+
+        $mailForUser = new UserOrderedSuccess($orderDetail);
+        Mail::to($user[0]['email'])->send($mailForUser);
+
+        $mailForTs = new TSOrderedSuccess($orderDetail);
+        Mail::to($orderDetail[0]['email'])->send($mailForTs);
 
         return redirect()->route('payment');
     }
