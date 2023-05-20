@@ -30,7 +30,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(AuthController::class)->prefix('auth')->group(function(){
-    Route::post('/login', 'login');
+    Route::post('/loginUser', 'loginUser');
+    Route::post('/loginTS', 'loginTS');
     Route::post('/userRegister', 'userRegister');
     Route::post('/tsRegister', 'tsRegister');
 

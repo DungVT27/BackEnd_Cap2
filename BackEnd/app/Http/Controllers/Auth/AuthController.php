@@ -17,7 +17,7 @@ use App\Http\Requests\AuthRequest;
 
 class AuthController extends Controller
 {
-    public function login(Request $request){
+    public function loginUser(Request $request){
         $credentials = $request->only('email', 'password');
         $token = null;
         try {
@@ -26,6 +26,32 @@ class AuthController extends Controller
             }
         } catch (JWTAuthException $e) {
             return response()->json(['failed_to_create_token'], 500);
+        }
+
+        if(Auth::user()->user_roles === 'ts'){
+            return response()->json(['msg' => 'Đăng nhập thất bại', 'email' => $request->email, 'status' => 401], 401);
+        }
+        return response()->json([
+            'msg' => 'Đăng nhập thành công',
+            'token' => $token, 
+            'user_info' =>
+                new UserInfoResource(User::find(Auth::user()->id)),
+            'status' => 200,
+        ], 200);
+    }
+
+    public function loginTS(Request $request){
+        $credentials = $request->only('email', 'password');
+        $token = null;
+        try {
+            if (!$token = JWTAuth::attempt($credentials)) {
+                return response()->json(['msg' => 'Đăng nhập thất bại', 'email' => $request->email, 'status' => 401], 401);
+            }
+        } catch (JWTAuthException $e) {
+            return response()->json(['failed_to_create_token'], 500);
+        }
+        if(Auth::user()->user_roles == 'user'){
+            return response()->json(['msg' => 'Đăng nhập thất bại', 'email' => $request->email, 'status' => 401], 401);
         }
         return response()->json([
             'msg' => 'Đăng nhập thành công',
