@@ -33,6 +33,7 @@ class RoomsController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'image' => $request->image,
+            'slot' => $request->slot,
         ]);
 
         Rooms::find($room->id)->members()->attach($request->owner_id, ['is_confirm' => true]);
@@ -72,6 +73,7 @@ class RoomsController extends Controller
                     'name' => $request->name,
                     'description' => $request->description,
                     'image' => $request->image,
+                    'slot' => $request->slot,
                 ]);
                 return response()->json(['msg' => "Update room thành công", 'status' => 200], 200);
             }
