@@ -14,6 +14,11 @@ use JWTAuth;
 use JWTAuthException;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Http\Requests\AuthRequest;
+use App\Mail\UserRegister;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\URL;
+
 
 class AuthController extends Controller
 {
@@ -26,6 +31,10 @@ class AuthController extends Controller
             }
         } catch (JWTAuthException $e) {
             return response()->json(['failed_to_create_token'], 500);
+        }
+
+        if(empty(Auth::user()->email_verified_at)){
+            return response()->json(['msg' => 'Đăng nhập thất bại, email của bạn chưa được xác thực', 'email' => $request->email, 'status' => 401], 401);
         }
 
         if(Auth::user()->user_roles === 'ts'){
@@ -50,6 +59,10 @@ class AuthController extends Controller
         } catch (JWTAuthException $e) {
             return response()->json(['failed_to_create_token'], 500);
         }
+        
+        if(empty(Auth::user()->email_verified_at)){
+            return response()->json(['msg' => 'Đăng nhập thất bại, email của bạn chưa được xác thực', 'email' => $request->email, 'status' => 401], 401);
+        }
         if(Auth::user()->user_roles == 'user'){
             return response()->json(['msg' => 'Đăng nhập thất bại', 'email' => $request->email, 'status' => 401], 401);
         }
@@ -70,18 +83,25 @@ class AuthController extends Controller
     public function userRegister(Request $request){
         try{
             $email = User::where('email', $request->email)->firstOrFail();
-            return response()->json(['msg' => 'Đăng ký thất bại email của bạn đã tồn tại', 
-                                    'data' =>[
-                                        'email' => $request->email,
-                                        'phone_number' => $request->phone_number,
-                                        'password' => $request->password,
-                                        'name' => $request->name,
-                                        'status' => 401
-                                    ]], 401);
+            if(!empty($email->email_verified_at)){
+                return response()->json(['msg' => 'Đăng ký thất bại email của bạn đã tồn tại', 
+                'data' =>[
+                    'email' => $request->email,
+                    'phone_number' => $request->phone_number,
+                    'password' => $request->password,
+                    'name' => $request->name,
+                    'status' => 401
+                ]], 401);
+            }
+            else{
+                $email = $request->email;
+            }
         }
         catch(\Exception){
             $email = $request->email;
         }
+
+        User::where('email', $request->email)->delete();
         
         $user = User::create([
             'name' => $request->name,
@@ -98,25 +118,38 @@ class AuthController extends Controller
             'avatar' => ''
         ]); 
 
-        return response()->json(['msg' => "Đăng ký thành công", 'status' => 200], 200);
+        $user->url = URL::temporarySignedRoute(
+            'verifyEmail', now()->addHours(24), ['id' => $user->id]
+        );
+
+        $mail = new UserRegister($user);
+        Mail::to($email)->send($mail);
+
+        return response()->json(['msg' => "Đăng ký thành công, vui lòng kiểm tra email của bạn", 'status' => 200], 200);
     }
 
     public function tsRegister(Request $request){
         try{
             $email = User::where('email', $request->email)->firstOrFail();
-            return response()->json(['msg' => 'Đăng ký thất bại email của bạn đã tồn tại', 
-                                    'data' =>[
-                                        'email' => $request->email,
-                                        'phone_number' => $request->phone_number,
-                                        'password' => $request->password,
-                                        'name' => $request->name,
-                                        'status' => 401
-                                    ]], 401);
+            if(!empty($email->email_verified_at)){
+                return response()->json(['msg' => 'Đăng ký thất bại email của bạn đã tồn tại', 
+                'data' =>[
+                    'email' => $request->email,
+                    'phone_number' => $request->phone_number,
+                    'password' => $request->password,
+                    'name' => $request->name,
+                    'status' => 401
+                ]], 401);
+            }
+            else{
+                $email = $request->email;
+            }
         }
         catch(\Exception){
             $email = $request->email;
         }
 
+        User::where('email', $request->email)->delete();
         $user = User::create([
             'name' => $request->name,
             'email' => $email,
@@ -131,7 +164,14 @@ class AuthController extends Controller
             'avatar' => ''
         ]);
 
-        return response()->json(['msg' => "Đăng ký thành công", 'status' => 200], 200);
+        $user->url = URL::temporarySignedRoute(
+            'verifyEmail', now()->addHours(24), ['id' => $user->id]
+        );
+
+        $mail = new UserRegister($user);
+        Mail::to($email)->send($mail);
+
+        return response()->json(['msg' => "Đăng ký thành công, vui lòng kiểm tra email của bạn", 'status' => 200], 200);
     }
 
     public function adminLoginPage()
@@ -173,5 +213,22 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return to_route('login');
+    }
+
+    public function emailVerify(Request $request)
+    {
+        if(!empty(User::find($request->id))){
+            User::where('id', $request->id)->update([
+                'email_verified_at' => now(),
+            ]);
+    
+            return view('verifyUserSuccess');
+        }
+        return "Có lỗi xảy ra, vui lòng xác thực lại";
+    }
+
+    public function backToLogin()
+    {
+        return route('payment');
     }
 }
