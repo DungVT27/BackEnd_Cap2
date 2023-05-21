@@ -202,15 +202,25 @@ class ToursController extends Controller
     public function searchByCondition(Request $request)
     {   
         if(empty($request->place) && empty($request->fromDate) && empty($request->toDate)){
-            $tour = Tours::all()->toArray();
+            $tour = Tours::join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+                ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+                ->select('tours.*', 'users.name as travel_supplier_name')
+                ->get()
+                ->toArray();
             foreach($tour as $key => $value){
                 $tour[$key]['type_tour'] = "ts";
             }
 
-            $psTour = PersonalTours::all()->toArray();
+            $psTour = PersonalTours::join('users', 'personal_tours.owner_id', '=', 'users.id')
+                ->select('personal_tours.*', 'users.name as owner_name')
+                ->get()
+                ->toArray();
             foreach($psTour as $key => $value){
                 $psTour[$key]['type_tour'] = "ps";
+                $count = PersonalTours::find($psTour[$key]['id'])->room->members()->where('is_confirm', true)->count();
+                $psTour[$key]['members'] = $count;
             }
+
             return response()->json(array_merge($tour, $psTour));
         }
 
@@ -241,8 +251,11 @@ class ToursController extends Controller
                 ->select('personal_tours.*', 'users.name as owner_name')
                 ->get()
                 ->toArray();
+
             foreach($psFromWhere as $key => $value){
                 $psFromWhere[$key]['type_tour'] = "ps";
+                $count = PersonalTours::find($psFromWhere[$key]['id'])->room->members()->where('is_confirm', true)->count();
+                $psFromWhere[$key]['members'] = $count;
             }
 
             $psToWhere = PersonalTours::where('personal_tours.to_where', 'like', "%" . $request->place . "%")
@@ -253,6 +266,8 @@ class ToursController extends Controller
                 ->toArray();
             foreach($psToWhere as $key => $value){
                 $psToWhere[$key]['type_tour'] = "ps";
+                $count = PersonalTours::find($psToWhere[$key]['id'])->room->members()->where('is_confirm', true)->count();
+                $psToWhere[$key]['members'] = $count;
             }
 
             return response()->json(array_merge($tsTour, $psFromWhere, $psToWhere));
@@ -276,6 +291,8 @@ class ToursController extends Controller
                     ->toArray();
                 foreach($psTour as $key => $value){
                     $psTour[$key]['type_tour'] = "ps";
+                    $count = PersonalTours::find($psTour[$key]['id'])->room->members()->where('is_confirm', true)->count();
+                    $psTour[$key]['members'] = $count;
                 }
 
                 return response()->json(array_merge($tsTour, $psTour));
@@ -300,6 +317,8 @@ class ToursController extends Controller
                     ->toArray();
                 foreach($psFromWhere as $key => $value){
                     $psFromWhere[$key]['type_tour'] = "ps";
+                    $count = PersonalTours::find($psFromWhere[$key]['id'])->room->members()->where('is_confirm', true)->count();
+                    $psFromWhere[$key]['members'] = $count;
                 }
 
                 $psToWhere = PersonalTours::where('personal_tours.to_where', 'like', "%" . $request->place . "%")
@@ -310,6 +329,8 @@ class ToursController extends Controller
                     ->toArray();
                 foreach($psToWhere as $key => $value){
                     $psToWhere[$key]['type_tour'] = "ps";
+                    $count = PersonalTours::find($psToWhere[$key]['id'])->room->members()->where('is_confirm', true)->count();
+                    $psToWhere[$key]['members'] = $count;
                 }
 
                 return response()->json(array_merge($tsTour, $psFromWhere, $psToWhere));
