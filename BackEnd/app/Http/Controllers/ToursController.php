@@ -22,7 +22,11 @@ class ToursController extends Controller
      */
     public function index()
     {
-        return response()->json(Tours::all());
+        $tour = Tours::join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+        ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+        ->select('tours.*', 'users.name as travel_supplier_name')
+        ->get();
+        return response()->json($tour);
     }
 
     /*
