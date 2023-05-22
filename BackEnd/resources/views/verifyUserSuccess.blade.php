@@ -8,6 +8,6 @@
 </head>
 <body>
     <h1>Bạn đã xác thực email thành công</h1>
-    <a href="{{ route('backToLogin') }}">Quay lại</a>
+    <a href="{{ route('backToLogin', ['id' => $id]) }}">Quay lại</a>
 </body>
 </html>

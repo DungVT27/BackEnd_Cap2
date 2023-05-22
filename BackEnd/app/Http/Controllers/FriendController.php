@@ -49,7 +49,7 @@ class FriendController extends Controller
             ]);
             
             return response()->json([
-                'msg' => 'Make friend thành công',
+                'msg' => 'Follow thành công',
                 'status' => 200
             ]);
         }

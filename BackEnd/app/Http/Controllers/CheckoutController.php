@@ -141,7 +141,8 @@ class CheckoutController extends Controller
         $mailForTs = new TSOrderedSuccess($orderDetail);
         Mail::to($orderDetail[0]['email'])->send($mailForTs);
 
-        return redirect()->route('payment');
+        header("Location:http://localhost:3000/bookTour.html");
+        exit;
     }
 
     public function payment()

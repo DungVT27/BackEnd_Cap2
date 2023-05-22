@@ -222,13 +222,22 @@ class AuthController extends Controller
                 'email_verified_at' => now(),
             ]);
     
-            return view('verifyUserSuccess');
+            return view('verifyUserSuccess')->with('id', $request->id);
         }
         return "Có lỗi xảy ra, vui lòng xác thực lại";
     }
 
-    public function backToLogin()
+    public function backToLogin(Request $request)
     {
-        return route('payment');
+        $user = User::where('id', $request->id)->get();
+        $role = $user[0]->user_roles;
+        if($role == 'ts'){
+            header("Location:http://localhost:3000/TS-register.html");
+            exit;
+        }
+        else{
+            header("Location:http://localhost:3000/login-register.html");
+            exit;
+        }
     }
 }
