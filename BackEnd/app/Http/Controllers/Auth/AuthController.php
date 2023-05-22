@@ -218,6 +218,9 @@ class AuthController extends Controller
     public function emailVerify(Request $request)
     {
         if(!empty(User::find($request->id))){
+            if(!empty(User::find($request->id)->email_verified_at)){
+                return "Bạn đã xác thực email rồi";
+            }
             User::where('id', $request->id)->update([
                 'email_verified_at' => now(),
             ]);
