@@ -136,10 +136,10 @@ class CheckoutController extends Controller
         // dd($orderDetail);
 
         $mailForUser = new UserOrderedSuccess($orderDetail);
-        Mail::to($user[0]['email'])->send($mailForUser);
+        Mail::to($user[0]['email'])->queue($mailForUser);
 
         $mailForTs = new TSOrderedSuccess($orderDetail);
-        Mail::to($orderDetail[0]['email'])->send($mailForTs);
+        Mail::to($orderDetail[0]['email'])->queue($mailForTs);
 
         header("Location:http://localhost:3000/bookTour.html");
         exit;
