@@ -26,6 +26,11 @@ class ToursController extends Controller
         ->join('users', 'ts_profiles.user_id', '=', 'users.id')
         ->select('tours.*', 'users.name as travel_supplier_name')
         ->get();
+
+        foreach($tour as $tourItem){
+            $images = Images::where('tour_id', $tourItem->id)->get();
+            $tourItem->images = $images;
+        }
         return response()->json($tour);
     }
 
