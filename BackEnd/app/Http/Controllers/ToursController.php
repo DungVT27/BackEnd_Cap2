@@ -56,6 +56,7 @@ class ToursController extends Controller
                 'tour_id' => $tourId,
                 'lat' => $tripPlanValue->lat,
                 'lon' => $tripPlanValue->lon,
+                'order' => $tripPlanValue->order,
             ]);
         }
     }

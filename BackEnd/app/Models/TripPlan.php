@@ -18,6 +18,7 @@ class TripPlan extends Model
         'tour_id',
         'lat',
         'lon',
+        'order',
     ];
 
     protected $hidden = [
