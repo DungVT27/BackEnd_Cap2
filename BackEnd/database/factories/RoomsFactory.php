@@ -18,7 +18,7 @@ class RoomsFactory extends Factory
     public function definition(): array
     {
         return [
-            'room_owner' => rand(2, 105),
+            'room_owner' => rand(2, 21),
             'name' => fake()->country() . ' tour',
             'description' => fake()->realText(fake()->numberBetween(10,20)),
             'image'=> HelpersFacade::tripImageUrlGenerate(),
