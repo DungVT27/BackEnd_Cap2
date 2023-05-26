@@ -17,7 +17,7 @@ class UserProfileFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fake()->unique()->numberBetween(6, 16),
+            'user_id' => fake()->unique()->numberBetween(6, 15),
             'gender' => array_rand(['male' => 1, 'female' => 2]),
             'avatar' => array_rand([ 
                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOnUBiI51lBoTRhYTJHEh8eM4BUb66vN5BeQ&usqp=CAU' => 2,
