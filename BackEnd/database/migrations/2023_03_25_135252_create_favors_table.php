@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('favors', function (Blueprint $table) {
             $table->id();
             $table->string('favor_name');
-            // $table->timestamps();
+            $table->timestamps();
         });
     }
 

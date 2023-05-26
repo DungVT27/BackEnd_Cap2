@@ -10,4 +10,13 @@ class Favors extends Model
     use HasFactory;
 
     protected $table = "favors";
+
+    protected $fillable = [
+        'favor_name',
+    ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }

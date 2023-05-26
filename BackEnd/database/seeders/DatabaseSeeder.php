@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Favors;
 use App\Models\Images;
 use App\Models\PersonalTours;
 use App\Models\Rooms;
@@ -15,6 +16,28 @@ use App\Models\TSProfile;
 
 class DatabaseSeeder extends Seeder
 {
+    public $favors = [
+        'Dã ngoại',
+        'Bơi lội',
+        'Cắm trại',
+        'Đạp xe',
+        'Lướt sóng',
+        'Leo núi',
+        'Câu cá',
+        'Trượt tuyết',
+        'Yoga',
+        'Nhảy dù',
+        'Chụp hình',
+        'Thiện nguyện',
+        'Thả diều',
+        'Xem phim',
+        'Âm nhạc',
+        'Dã ngoại', 
+        'Lặn',
+        'Đi bộ',
+        'Chèo thuyền'
+    ];
+
     /**
      * Seed the application's database.
      */
@@ -214,5 +237,11 @@ class DatabaseSeeder extends Seeder
         ]);
         
         Images::factory(20)->create();
+
+        foreach ($this->favors as $favor) {
+            Favors::create([
+                'favor_name' => $favor,
+            ]);
+        }
     }
 }
