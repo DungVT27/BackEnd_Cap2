@@ -10,6 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use App\Models\PersonalTours;
 use App\Models\Tours;
 use App\Models\Rooms;
+use App\Models\Favors;
 use App\Models\Notifications;
 use App\Models\UserProfile;
 use Illuminate\Support\Facades\DB;
@@ -92,6 +93,10 @@ class User extends Authenticatable implements JWTSubject
 
     public function notifications(){
         return $this->hasMany(Notifications::class, 'receiver_id', 'id');
+    }
+
+    public function favors(){
+        return $this->belongsToMany(Favors::class, 'favor_user', 'user_id', 'favor_id');
     }
 
     public function newUserInMonth($month, $year)
