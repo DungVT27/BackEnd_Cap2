@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'truongboanhai', //123456
             'phone_number' => "0999999999",
             'is_Admin' => true,
+            'email_verified_at' => now(),
             'user_roles' => 'user',
             'about' => "(*_*)",
         ]);
@@ -36,6 +37,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'truongboanhai', //123456
             'phone_number' => "0192197",
             'is_Admin' => false,
+            'email_verified_at' => now(),
             'user_roles' => 'user',
             'about' => "Trường đầu bò ăn hại ngu si tứ tri phát triển :)",
         ]);
@@ -52,6 +54,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'truongboanhai', //123456
             'phone_number' => "023428468",
             'is_Admin' => false,
+            'email_verified_at' => now(),
             'user_roles' => 'user',
             'about' => "Solo yasuo?",
         ]);
@@ -68,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'truongboanhai', //123456
             'phone_number' => "02936942",
             'is_Admin' => false,
+            'email_verified_at' => now(),
             'user_roles' => 'ts',
             'about' => "Your will, my hand",
         ]);
@@ -83,6 +87,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'truongboanhai', //123456
             'phone_number' => "02349294",
             'is_Admin' => false,
+            'email_verified_at' => now(),
             'user_roles' => 'ts',
             'about' => "Solo ys?",
         ]);
