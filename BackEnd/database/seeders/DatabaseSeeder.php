@@ -104,17 +104,17 @@ class DatabaseSeeder extends Seeder
             'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
 
-        User::factory(50)->create([
+        User::factory(10)->create([
             'user_roles' => 'user'
         ]);
         
-        User::factory(50)->create([
+        User::factory(10)->create([
             'user_roles' => 'ts'
         ]);
 
-        UserProfile::factory(50)->create();
-        TSProfile::factory(50)->create();
-        Rooms::factory(50)->create();
+        UserProfile::factory(10)->create();
+        TSProfile::factory(10)->create();
+        Rooms::factory(20)->create();
 
         Tours::create([
             'ts_id' => 1,
@@ -213,6 +213,6 @@ class DatabaseSeeder extends Seeder
             'image' => "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPKXglM8hw473nI64ggSKgk5sjIlThRlAyag&usqp=CAU",
         ]);
         
-        Images::factory(50)->create();
+        Images::factory(20)->create();
     }
 }
