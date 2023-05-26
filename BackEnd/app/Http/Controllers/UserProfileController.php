@@ -31,9 +31,18 @@ class UserProfileController extends Controller
      */
     public function show(string $id)
     {
+        $user = UserProfile::where('user_id', $id)
+            ->join('users', 'user_profiles.user_id', '=', 'users.id')
+            ->select('users.name', 'user_profiles.avatar', 
+                'user_profiles.gender', 'users.phone_number', 
+                'users.about', 'users.user_roles', 
+                'users.email', 'users.id')
+            ->get()
+            ->toArray();
+        $user[0]['favors'] = User::find($id)->favors;
         return response()->json([
             'status' => 200,
-            'user_info' => UserProfile::with('user')->where('user_id', $id)->get()[0],
+            'user_info' => $user,  
         ]);
     }
 
