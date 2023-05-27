@@ -212,12 +212,17 @@ class ToursController extends Controller
 
     public function search(Request $request)
     {
+        $tours = Tours::where('tours.name', 'like', "%" . $request->name. "%")
+        ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
+        ->join('users', 'ts_profiles.user_id', '=', 'users.id')
+        ->select('tours.*', 'users.name as travel_supplier_name')
+        ->get();
+        foreach($tours as $tourItem){
+            $images = Images::where('tour_id', $tourItem['id'])->get()->toArray();
+            $tourItem['images'] = $images;
+        }
         return response()->json([
-            'tours' => Tours::where('tours.name', 'like', "%" . $request->name. "%")
-                ->join('ts_profiles', 'tours.ts_id', '=', 'ts_profiles.id')
-                ->join('users', 'ts_profiles.user_id', '=', 'users.id')
-                ->select('tours.*', 'users.name as travel_supplier_name')
-                ->get(),
+            'tours' => $tours,
             'status' => 200,
         ]);
     }
