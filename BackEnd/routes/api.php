@@ -70,7 +70,7 @@ Route::prefix('ts/tour')->group(function(){
     Route::get('/searchUserOrdered', [ToursController::class, 'searchUserOrdered']);
     Route::get('/{id}', [ToursController::class, 'show']);
     Route::post('/create', [ToursController::class, 'store']);
-    Route::put('/update/{id}', [ToursController::class, 'update']);
+    Route::post('/update/{id}', [ToursController::class, 'update']);
     Route::delete('/delete/{id}', [ToursController::class, 'destroy']);
     Route::get('/all/{id}', [ToursController::class, 'allTourOfTS']);
 });
