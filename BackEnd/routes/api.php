@@ -91,7 +91,7 @@ Route::prefix('personal/room')->group(function(){
     Route::get('/all', [RoomsController::class, 'index']);
     Route::post('/create', [RoomsController::class, 'store']);
     Route::get('/show/{id}', [RoomsController::class, 'show']);
-    Route::put('/update/{id}', [RoomsController::class, 'update']);
+    Route::post('/update/{id}', [RoomsController::class, 'update']);
     Route::delete('/delete/{id}', [RoomsController::class, 'destroy']);
     Route::post('/join', [RoomsController::class, 'join']);
     Route::get('getAllUserNeedConfirm/{room_id}/', [RoomsController::class, 'getAllUserNeedConfirm']);
