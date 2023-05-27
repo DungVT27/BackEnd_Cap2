@@ -52,7 +52,7 @@ class ToursController extends Controller
         foreach($tripPlan as $tripPlanKey => $tripPlanValue){
             TripPlan::create([
                 'name' => $tripPlanValue->name,
-                'description' => $tripPlanValue->desc,
+                'description' => $tripPlanValue->description,
                 'tour_id' => $tourId,
                 'lat' => $tripPlanValue->lat,
                 'lon' => $tripPlanValue->lon,
