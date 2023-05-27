@@ -11,6 +11,7 @@ use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\RoomsController;
 use App\Http\Controllers\OrderedsController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\FavorsController;
 use App\Http\Controllers\NotificationsController;
 use App\Models\Notifications;
 
@@ -120,4 +121,8 @@ Route::prefix('notification')->group(function(){
 
 Route::prefix('ordered')->group(function(){
     Route::get('/userOrderedHistory', [OrderedsController::class, 'historyOrderedOfUser']);
+});
+
+Route::prefix('favors')->group(function(){
+    Route::get('/', [FavorsController::class, 'index']);
 });
