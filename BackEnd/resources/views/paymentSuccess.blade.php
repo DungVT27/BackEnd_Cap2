@@ -8,6 +8,6 @@
 </head>
 <body>
     <h1>Thanh toán thành công</h1>
-    <a href="">Quay lại</a>
+    <a href="{{ route('backToHome') }}">Quay lại</a>
 </body>
 </html>

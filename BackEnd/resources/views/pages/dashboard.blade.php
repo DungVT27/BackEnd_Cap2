@@ -76,11 +76,11 @@ Dashboard
                 </div>
 
                 <div class="card-body">
-                  <h5 class="card-title">Revenue <span>| {{ $revenueTitle }}</span></h5>
+                  <h5 class="card-title">Revenue(VND) <span>| {{ $revenueTitle }}</span></h5>
 
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                      <i class="bi bi-currency-dollar"></i>
+                      <i class="bi bi-cash"></i>
                     </div>
                     <div class="ps-3">
                       <h6>{{ $revenueInMonth }}</h6>

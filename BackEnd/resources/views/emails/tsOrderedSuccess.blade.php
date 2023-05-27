@@ -8,7 +8,7 @@
 </head>
 <body>
     <h4>Người dùng {{ $data[0]['orderedUser'][0]['name'] }} đã đặt thành công {{ $data[0]['tickets'] }} vé của tour {{ $data[0]['tour_name'] }} 
-        khởi hành từ ngày {{ $data[0]['from_date'] }} và đến ngày {{ $data[0]['to_date'] }} do bạn cung cấp
+        khởi hành từ ngày {{ date('d-m-Y', strtotime($data[0]['from_date'])) }} và đến ngày {{ date('d-m-Y', strtotime($data[0]['to_date'])) }} do bạn cung cấp
     </h4>
     <h4>Tận hưởng ngày của bạn</h4>
 </body>

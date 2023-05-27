@@ -40,6 +40,7 @@ Route::controller(AuthController::class)->prefix('auth')->group(function(){
 
 Route::get('/emailVerify/{id}', [AuthController::class, 'emailVerify'])->name('verifyEmail');
 Route::get('/backToLogin', [AuthController::class, 'backToLogin'])->name('backToLogin');
+Route::get('/backToHome', [CheckoutController::class, 'backToHome'])->name('backToHome');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('token/userinfo', [AuthController::class, 'getUserInfo']);
