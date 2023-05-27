@@ -128,6 +128,19 @@ class ToursController extends Controller
      */
     public function update(Request $request, Tours $tours)
     {
+        $validator = \Validator::make($request->all(),[
+            'name' => 'required|max:100',
+            'price' => 'required|numeric',
+            'slot' => 'required|numeric',
+            'from_date' => 'required',
+            'address' => 'required',
+            'to_date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['msg' => "Update tour không thành công", 'status' => 403], 403);
+        }
+
         if(Tours::find($request->id) == null){
             return response()->json(['msg' => "Tour không tồn tại", 'status' => 404], 404);
         }
